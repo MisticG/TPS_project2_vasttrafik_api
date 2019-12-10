@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import { authenticate } from './authenticationHandler';
 
 const app = express();
 
@@ -7,7 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
 app.get('/',(req:express.Request, res:express.Response)=>{
-    res.send('Hell haahahah')
+    res.send(authenticate())
 })
 
 
