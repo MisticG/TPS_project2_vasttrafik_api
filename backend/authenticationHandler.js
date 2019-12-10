@@ -37,30 +37,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var keys_1 = require("./keys");
-var axios = require('axios')["default"];
+var axios_1 = require("axios");
 var querystring = require('querystring');
 function authenticate() {
     return __awaiter(this, void 0, void 0, function () {
-        var url, body, headers, request, response, error_1;
+        var url, body, config, request, response, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     url = "https://api.vasttrafik.se" + keys_1.keys.oauthUrl;
-                    body = querystring.stringify({ 'grant_type': 'client_credentials', 'client_id': keys_1.keys.key, 'client_secret': keys_1.keys.secret });
-                    headers = {
+                    body = querystring.stringify({
+                        'grant_type': 'client_credentials',
+                        'client_id': keys_1.keys.key,
+                        'client_secret': keys_1.keys.secret
+                    });
+                    config = {
                         'Content-type': 'application/x-www-form-urlencoded'
                     };
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, , 5]);
-                    return [4 /*yield*/, axios.post(url, body, headers)];
+                    return [4 /*yield*/, axios_1["default"].post(url, body, config)];
                 case 2:
                     request = _a.sent();
                     return [4 /*yield*/, request];
                 case 3:
                     response = _a.sent();
                     if (response.status === 200) {
-                        return [2 /*return*/, console.log(response.data)];
+                        exports.token = response.data.access_token;
+                        return [2 /*return*/, exports.token
+                            //console.log(response.data)
+                        ];
+                        //console.log(response.data)
                     }
                     else {
                         return [2 /*return*/, response.status + 'Error: ' + response.statusText];
