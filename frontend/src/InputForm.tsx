@@ -22,17 +22,32 @@ export default class InputForm extends React.Component<{}, state> {
     event.preventDefault();
   }
 
-  
+
 
   render() {
+
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-            Name:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div className="card card-body mb-4 p-4">
+        <h1 className= "display-4 text-center">Sök efter din resa</h1>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <input
+            className="form-control form-control-lg"
+            placeholder="From:" 
+            type="text" value={this.state.value} onChange={this.handleChange} />
+        
+            <input
+            className="form-control form-control-lg"
+            placeholder="To:"  
+            type="text" value={this.state.value} onChange={this.handleChange} />
+
+            <input
+            className="form-control form-control-lg" 
+            type="submit" value="Submit" />
+          </div>
+        </form>
+        
+      </div>
     );
   }
 }
