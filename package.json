@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "both": "npm-run-all --parallel build-watch built",
-    "built":"cd backend && nodemon index.js",
+    "built": "cd backend && nodemon index.js",
     "build-watch": "cd backend && tsc -w index.ts",
     "frontend": "cd frontend &&  npm start",
     "dev": "concurrently --kill-others-on-fail \"npm run both\" \"npm run frontend\""

@@ -1,19 +1,8 @@
 import React, { Component } from 'react';
+import InputForm from './InputForm'
 
-interface State {
-
-   
-}
-
-export default class App extends Component<{}, State> {
-    
-
-   
-
-    render() {
-        return (<div>
-          
-        </div> 
-)
+export default class App extends Component<{}>  {
+  render() {
+    return <InputForm />
     }
 }

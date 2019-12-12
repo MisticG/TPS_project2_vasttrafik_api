@@ -10,6 +10,10 @@ app.get('/',(req:express.Request, res:express.Response)=>{
     res.send('Hell haahahah')
 })
 
+app.post('/', (req:express.Request, res:express.Response) => {
+    req.body('hej')
+})
+
 
 
 const port = 5000;

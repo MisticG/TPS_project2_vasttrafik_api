@@ -8,5 +8,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', function (req, res) {
     res.send('Hell haahahah');
 });
+app.post('/', function (req, res) {
+    req.body('hej');
+});
 var port = 5000;
 app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
