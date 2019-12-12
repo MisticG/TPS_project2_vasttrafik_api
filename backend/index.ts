@@ -36,14 +36,14 @@ app.get('/', (req:express.Request, res:express.Response)=>{
             })
              */
             //check the length of json file
-            fileSytem.readFile('locations.json',(error, data)=>{
+           /*  fileSytem.readFile('locations.json',(error, data)=>{
                 if(error){
                     console.log(error)
                 }
                 let dataParse = JSON.parse(data)
                 console.log(dataParse.length);
                 res.json({length:dataParse.length})
-            })
+            }) */
 
         } catch(error){ 
             console.log(error, 'here')
@@ -72,6 +72,16 @@ app.post('/searchJourny', (req:express.Request, res:express.Response)=>{
 })
 
 
+app.get('/locations', (req:express.Request, res:express.Response)=>{
+    fileSytem.readFile('locations.json',(error, data)=>{
+        if(error){
+            console.log(error)
+        }
+
+        let dataParse = JSON.parse(data)
+        res.json(dataParse)
+    })
+})
 
 
 const port = 5000;

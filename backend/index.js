@@ -68,14 +68,14 @@ app.get('/', function (req, res) {
                      })
                       */
                     //check the length of json file
-                    fileSytem.readFile('locations.json', function (error, data) {
-                        if (error) {
-                            console.log(error);
-                        }
-                        var dataParse = JSON.parse(data);
-                        console.log(dataParse.length);
-                        res.json({ length: dataParse.length });
-                    });
+                    /*  fileSytem.readFile('locations.json',(error, data)=>{
+                         if(error){
+                             console.log(error)
+                         }
+                         let dataParse = JSON.parse(data)
+                         console.log(dataParse.length);
+                         res.json({length:dataParse.length})
+                     }) */
                 }
                 catch (error) {
                     console.log(error, 'here');
@@ -100,6 +100,15 @@ app.post('/searchJourny', function (req, res) {
     */
     //2journyDetail arrival times can not be called directly
     //3 /trip from which time a bus will leave
+});
+app.get('/locations', function (req, res) {
+    fileSytem.readFile('locations.json', function (error, data) {
+        if (error) {
+            console.log(error);
+        }
+        var dataParse = JSON.parse(data);
+        res.json(dataParse);
+    });
 });
 var port = 5000;
 app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
