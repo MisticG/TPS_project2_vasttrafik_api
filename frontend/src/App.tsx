@@ -1,5 +1,6 @@
 import React, { Component, CSSProperties } from 'react';
 import Autosuggest2 from './autoSuggestions/autoSuggestion2'
+import Form from './forms/Form';
 interface location {
     name: string;
     id: number;
@@ -8,18 +9,15 @@ interface location {
     weight: number;
     track: string;
 }
-interface option {
-    value:'',
-    label:''
-}
+
 interface State {
     start:string,
     end:string,
     avgande:string,
     ankommande:string,
-    locations:location[],
-    options:option[],
-    test:number
+    choosenStart:location,
+    chooosenEnd:location
+
    
 }
 
@@ -34,26 +32,52 @@ export default class App extends Component<Props, State> {
             end:'',
             avgande:'',
             ankommande:'',
-            locations:[{name:'', id:0, lat:0, lon:0, weight:0, track:''}],
-            options:[{value:'',label:''}],
-            test:1000
+            choosenStart:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
+            chooosenEnd:{name:'', id:0, lat:0, lon:0, weight:0, track:''}
+            
         }
     }
 
-    getStartValue = (value:string)=>{
-        console.log(value, 'here is valuehhahahah start')
-       
-    }
-    getEndValue = (value:string)=>{
-        console.log(value, 'here is end value')
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
+        event.preventDefault();
+      
      
+        //this.searchForSelectedDestination()
+    }
+
+    handleOnchangeAvgande  = ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({avgande:event.target.value}) }
+
+    handleOnchangeAnkommande  = ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({start:event.target.value}) }
+
+    getStartValue = (value:{name: string, id: number, lat: number, lon: number,weight: number,track: string})=>{
+        
+        this.setState({choosenStart: value})
+    }
+    getEndValue = (value:{name: string, id: number, lat: number, lon: number,weight: number,track: string})=>{
+        
+        this.setState({chooosenEnd:value})
     }
   
     render() {
         return (<div style={formStyle}>
-                <span>It my take 5 seconds...</span>
+                <span>It my take 5 seconds... before loading result</span>
+               
+            <Form> 
+            <form onSubmit={this.handleSubmit} style={formStyle}>
                 <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
-                <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/>
+                <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
+
+               <label>Avgående tid: <input type="data" value={this.state.avgande} onChange={this.handleOnchangeAvgande}/></label> <br/>
+                <label>Ankommande tid: <input type="data" value={this.state.ankommande} onChange={this.handleOnchangeAnkommande}/></label>
+        
+                <input type="submit" value="Söka" />
+            </form>
+           </Form>
+
+
+
+
+
                 </div> 
 )
     }

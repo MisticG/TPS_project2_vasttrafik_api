@@ -1,29 +1,37 @@
 import Autosuggest from 'react-autosuggest';
 import React, { Component, CSSProperties } from 'react';
 import axios from 'axios';
-import { timingSafeEqual } from 'crypto';
+interface location {
+  name: string;
+  id: number;
+  lat: number;
+  lon: number;
+  weight: number;
+  track: string;
+}
+
+
 interface State{
     value:string,
     suggestions:any,
-    locations:any,
+    locations:location[],
     type:string
 }
 interface Props{
   placeholder:string
   value:string,
-  onChange:(value:string)=>void,
+  onChange:(value:{name: string, id: number, lat: number, lon: number,weight: number,track: string})=>void,
   type:string
 }
 
-  
-  // When suggestion is clicked, Autosuggest needs to populate the input
-  // based on the clicked suggestion. Teach Autosuggest how to calculate the
-  // input value for every given suggestion.
-  const getSuggestionValue = (suggestion:any) => suggestion;
-  
+// When suggestion is clicked, Autosuggest needs to populate the input
+// based on the clicked suggestion. Teach Autosuggest how to calculate the
+// input value for every given suggestion.
+const getSuggestionValue = (suggestion:any) => suggestion;
 
-  const renderSuggestion = (suggestion:any) => (
-    <ul>
+
+const renderSuggestion = (suggestion:any) => (
+  <ul>
       <li>{suggestion.name}</li>
     </ul>
   );
@@ -82,6 +90,10 @@ export default class Autosuggest2 extends React.Component<Props,State> {
         this.setState({ suggestions:data },()=>console.log(data, 'here is data'));
           
       };
+      rendIsLoading = ()=>{
+        let loading  = this.state.suggestions.length > 0 ? 'Is loding ...': '';
+        return loading
+      }
      
       onSuggestionsClearRequested = () => {
         this.setState({
@@ -93,7 +105,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
       render() {
 
         const { value, suggestions} = this.state;
-        console.log(value)
+      
         
 
     // Autosuggest will pass through all these props to the input.
@@ -106,7 +118,8 @@ export default class Autosuggest2 extends React.Component<Props,State> {
 
         return (<div>
 
-
+          {this.rendIsLoading()}
+                          
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -115,7 +128,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-     
+
         </div> 
             )}
 
