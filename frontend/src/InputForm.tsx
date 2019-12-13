@@ -28,22 +28,27 @@ export default class InputForm extends React.Component<{}, state> {
 
     return (
       <div className="card card-body mb-4 p-4">
-        <h1 className= "display-4 text-center">Sök efter din resa</h1>
+        <h1 className= "display-4 text-center">Välkommen Till Västtrafik</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <input
-            className="form-control form-control-lg"
+            className="form-control form-control-lg mb-4"
             placeholder="From:" 
-            type="text" value={this.state.value} onChange={this.handleChange} />
+            type="text" value={this.state.value} onChange={this.handleChange} 
+            />
         
             <input
-            className="form-control form-control-lg"
+            className="form-control form-control-lg mb-4"
             placeholder="To:"  
-            type="text" value={this.state.value} onChange={this.handleChange} />
+            type="text" value={this.state.value} onChange={this.handleChange} 
+            />
 
-            <input
-            className="form-control form-control-lg" 
-            type="submit" value="Submit" />
+            <button
+              className="btn btn-primary btn-lg btn-block mb-5"
+              type="submit"
+            >
+              Find Your Trip
+            </button>
           </div>
         </form>
         
