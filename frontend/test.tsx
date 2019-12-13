@@ -77,7 +77,7 @@ class Test extends Component<Props, State> {
     //Display autosuggestion component 
     displayAutoSuggestion = () => {
     
-       /*  if (this.state.options.length> 1) {
+        /* if (this.state.options.length> 1) {
             return <AutoSeggestion getvalue={this.getValueFromAutoSuggestion} options={this.state.options} />
         } */
     }

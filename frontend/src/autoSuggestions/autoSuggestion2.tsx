@@ -1,25 +1,30 @@
 import Autosuggest from 'react-autosuggest';
 import React, { Component, CSSProperties } from 'react';
 import axios from 'axios';
+import { timingSafeEqual } from 'crypto';
 interface State{
     value:string,
     suggestions:any,
-    locations:any
+    locations:any,
+    type:string
 }
 interface Props{
-
+  placeholder:string
+  value:string,
+  onChange:(value:string)=>void,
+  type:string
 }
 
   
   // When suggestion is clicked, Autosuggest needs to populate the input
   // based on the clicked suggestion. Teach Autosuggest how to calculate the
   // input value for every given suggestion.
-  const getSuggestionValue = (suggestion:any) => suggestion.value;
+  const getSuggestionValue = (suggestion:any) => suggestion;
   
 
   const renderSuggestion = (suggestion:any) => (
     <ul>
-      <li>{suggestion.value}</li>
+      <li>{suggestion.name}</li>
     </ul>
   );
 
@@ -30,9 +35,10 @@ export default class Autosuggest2 extends React.Component<Props,State> {
   constructor(props:Props) {
     super(props)
     this.state = {
-        value: '',
+        value: this.props.value,
         suggestions:[],
-        locations:[]
+        locations:[],
+        type:this.props.type
       };
     }
     componentDidMount(){
@@ -51,29 +57,30 @@ export default class Autosuggest2 extends React.Component<Props,State> {
           
         }
     
-    getSuggestions = (value:string)=>{
+    getSuggestions = async (value:string)=>{
        
-        let options:any = this.state.locations.filter((location: {name: string,id: number,lat: number, lon: number,weight: number,track: string}) =>
-            (location.name.toLowerCase()).search(value.toLowerCase()) !== -1 
-        ).map((location:any) => { return {value:location.name, label:location.name}})
+        let options:{name: string,id: number,lat: number, lon: number,weight: number,track: string}[] = await this.state.locations.filter((location: {name: string,id: number,lat: number, lon: number,weight: number,track: string}) =>
+            (location.name.toLowerCase()).indexOf(value.toLowerCase()) !== -1 
+        ).map((location:any) => { return location})
 
 
    
         return options
     }
 
-    onChange = (event:any, { newValue }:any) => {
+    onChange = (event:React.ChangeEvent<HTMLInputElement>, { newValue }:any) => {
+      let value =  typeof newValue === 'string' ? newValue = newValue: newValue.name
+      
         this.setState({
-          value: newValue
-        });
+          value: value
+        },()=>{ this.props.onChange(newValue)});
       };
 
-      onSuggestionsFetchRequested = ({ value }:any) => {
-          let data =   this.getSuggestions(value)
-          if(data.length > 0 ){
-
-              this.setState({ suggestions:data });
-          }
+      onSuggestionsFetchRequested = async ({ value }:any) => {
+          let data =  await  this.getSuggestions(value);
+          
+        this.setState({ suggestions:data },()=>console.log(data, 'here is data'));
+          
       };
      
       onSuggestionsClearRequested = () => {
@@ -81,17 +88,19 @@ export default class Autosuggest2 extends React.Component<Props,State> {
           suggestions: []
         });
       };
-      
+     
 
       render() {
 
-        const { value, suggestions } = this.state;
+        const { value, suggestions} = this.state;
+        console.log(value)
         
 
     // Autosuggest will pass through all these props to the input.
         const inputProps = {
-        placeholder: 'Från ',
+        placeholder: this.props.placeholder,
         value,
+        type:this.props.type,
         onChange: this.onChange
         };
 
@@ -100,22 +109,13 @@ export default class Autosuggest2 extends React.Component<Props,State> {
 
       <Autosuggest
         suggestions={suggestions}
-        onSuggestionsFetchRequested={ async (value:any)=>{
-            if(!value){
-                this.setState({suggestions:[]})
-            }
-            let options:any = this.state.locations.filter((location: {name: string,id: number,lat: number, lon: number,weight: number,track: string}) =>
-            (location.name.toLowerCase()).search(value.value.toLowerCase()) !== -1 
-            ).map((location:any) => { return {value:location.name, label:location.name}})
-            console.log(options)
-            this.setState({suggestions:options})
-        }   
-        }
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
+     
         </div> 
             )}
 

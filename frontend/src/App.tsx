@@ -1,8 +1,4 @@
 import React, { Component, CSSProperties } from 'react';
-import Form from './forms/Form';
-import axios from 'axios';
-import Select from 'react-select';
-import AutoSeggestion from './autoSuggestions/autoSuggestion';
 import Autosuggest2 from './autoSuggestions/autoSuggestion2'
 interface location {
     name: string;
@@ -31,25 +27,40 @@ interface Props {
 
 }
 export default class App extends Component<Props, State> {
-
-
-   componentDidMount(){
-    this.getAllStops()
-   }
-    //Get all allstops from vasttrafik api location/allStops
-    getAllStops = async () => {
-        let response = await axios.get('/locations');
-        let acResponse = await response.data
-        this.setState({locations:acResponse}, ()=>{console.log(this.state.locations.length, 'length all stops')})
-      
+    constructor(props:Props){
+        super(props);
+        this.state = {
+            start:'',
+            end:'',
+            avgande:'',
+            ankommande:'',
+            locations:[{name:'', id:0, lat:0, lon:0, weight:0, track:''}],
+            options:[{value:'',label:''}],
+            test:1000
+        }
     }
 
-
+    getStartValue = (value:string)=>{
+        console.log(value, 'here is valuehhahahah start')
+       
+    }
+    getEndValue = (value:string)=>{
+        console.log(value, 'here is end value')
+     
+    }
+  
     render() {
-
-        return (<div>
-            <Autosuggest2 />
-        </div> 
+        return (<div style={formStyle}>
+                <span>It my take 5 seconds...</span>
+                <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
+                <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/>
+                </div> 
 )
     }
+}
+
+const formStyle:CSSProperties = {
+    display:"flex",
+    flexDirection:"column",
+    alignItems:'center'
 }
