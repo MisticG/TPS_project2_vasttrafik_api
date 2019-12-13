@@ -1,6 +1,7 @@
 import React, { Component, CSSProperties } from 'react';
 import Autosuggest2 from './autoSuggestions/autoSuggestion2'
 import Form from './forms/Form';
+import axios from 'axios';
 interface location {
     name: string;
     id: number;
@@ -13,10 +14,12 @@ interface location {
 interface State {
     start:string,
     end:string,
-    avgande:string,
-    ankommande:string,
+    date:string,
+
     choosenStart:location,
-    chooosenEnd:location
+    chooosenEnd:location,
+    ankAvg:string,
+    text:string
 
    
 }
@@ -30,10 +33,11 @@ export default class App extends Component<Props, State> {
         this.state = {
             start:'',
             end:'',
-            avgande:'',
-            ankommande:'',
+            date:'',
+            ankAvg:'',
             choosenStart:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
-            chooosenEnd:{name:'', id:0, lat:0, lon:0, weight:0, track:''}
+            chooosenEnd:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
+            text:''
             
         }
     }
@@ -41,13 +45,37 @@ export default class App extends Component<Props, State> {
     handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
       
-     
-        //this.searchForSelectedDestination()
+        if( this.state.choosenStart.name !== '' && this.state.chooosenEnd .name !== '') {
+
+            this.searchTrip()
+        }
+      
     }
 
-    handleOnchangeAvgande  = ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({avgande:event.target.value}) }
 
-    handleOnchangeAnkommande  = ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({start:event.target.value}) }
+    searchTrip = async ()=> {
+    
+        let isDepOrArrTime = this.state.ankAvg === 'arraivle'?1:0;
+        console.log(isDepOrArrTime)
+        let data = 
+        {originId:this.state.choosenStart.id,
+        destId:this.state.chooosenEnd.id,
+        date:this.state.date,
+        time:this.state.text,
+        isDepOrArrTime:isDepOrArrTime
+        }
+        let response = await axios.post('/searchTrip', data);
+        let actuallResponse = await response.data;
+
+        console.log(actuallResponse, 'here is from axios')
+        }
+
+
+
+
+    handleOnchange= ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({[event.target.type]:event.target.value} as Pick<State, any>) }
+
+    handleSelect = (event: any) => { this.setState({ankAvg:event.target.value}) }
 
     getStartValue = (value:{name: string, id: number, lat: number, lon: number,weight: number,track: string})=>{
         
@@ -67,8 +95,13 @@ export default class App extends Component<Props, State> {
                 <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
                 <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
 
-               <label>Avgående tid: <input type="data" value={this.state.avgande} onChange={this.handleOnchangeAvgande}/></label> <br/>
-                <label>Ankommande tid: <input type="data" value={this.state.ankommande} onChange={this.handleOnchangeAnkommande}/></label>
+               <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
+               {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
+                <label>Tid: ex 14:00 <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
+                <select value={this.state.ankAvg} onChange={this.handleSelect}>
+                    <option value='departure'>Avgående</option>
+                    <option value={'arraivle'}>Akommande</option>
+                </select>
         
                 <input type="submit" value="Söka" />
             </form>

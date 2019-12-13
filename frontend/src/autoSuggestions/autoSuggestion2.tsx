@@ -87,7 +87,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
       onSuggestionsFetchRequested = async ({ value }:any) => {
           let data =  await  this.getSuggestions(value);
           
-        this.setState({ suggestions:data },()=>console.log(data, 'here is data'));
+        this.setState({ suggestions:data });
           
       };
       rendIsLoading = ()=>{

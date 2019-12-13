@@ -3,7 +3,8 @@ import * as bodyParser from 'body-parser';
 import { handleAccesstoken  } from './handlers/HandleaccessToken';
 import axios from 'axios';
 import * as fileSytem from 'file-system'
-
+import getTwoPointStops from './handlers/handleGetTwoPointsStops';
+import  getAllStops from './handlers/handleGetAllStops';
 const app:express.Application = express();
 
 app.use(bodyParser.json());
@@ -49,38 +50,20 @@ app.get('/', (req:express.Request, res:express.Response)=>{
             console.log(error, 'here')
         }
     } 
-    test ()
+    //test ()
+    res.send('holla')
 
 })
-
-app.post('/searchJourny', (req:express.Request, res:express.Response)=>{
-    let data = req.body;
-    console.log(data)
-    res.json({text:'success'});
-
-    //1departureBoard uses id from all locations and return the next 20 stops by giving time
-    /* 
-    This method will return the next 20 departures (or less if not existing) from a given point
-     in time or the next departures in a given timespan. The service can only be called for stops/stations
-      by using according ID retrieved by the location method. The parameter is called id. The time and date
-       are defined with the parameters date and time.
-    
-    */
-    //2journyDetail arrival times can not be called directly
-    //3 /trip from which time a bus will leave
-
+//Get orgin-dest points stops
+app.post('/searchTrip',(req:express.Request, res:express.Response)=>{
+ 
+    getTwoPointStops(req, res, axios);
 })
 
-
+//Get all stops 
 app.get('/locations', (req:express.Request, res:express.Response)=>{
-    fileSytem.readFile('locations.json',(error, data)=>{
-        if(error){
-            console.log(error)
-        }
-
-        let dataParse = JSON.parse(data)
-        res.json(dataParse)
-    })
+    getAllStops(fileSytem,res);
+   
 })
 
 

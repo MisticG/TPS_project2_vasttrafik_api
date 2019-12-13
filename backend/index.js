@@ -39,7 +39,10 @@ exports.__esModule = true;
 var express = require("express");
 var bodyParser = require("body-parser");
 var HandleaccessToken_1 = require("./handlers/HandleaccessToken");
+var axios_1 = require("axios");
 var fileSytem = require("file-system");
+var handleGetTwoPointsStops_1 = require("./handlers/handleGetTwoPointsStops");
+var handleGetAllStops_1 = require("./handlers/handleGetAllStops");
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -84,31 +87,16 @@ app.get('/', function (req, res) {
             });
         });
     }
-    test();
+    //test ()
+    res.send('holla');
 });
-app.post('/searchJourny', function (req, res) {
-    var data = req.body;
-    console.log(data);
-    res.json({ text: 'success' });
-    //1departureBoard uses id from all locations and return the next 20 stops by giving time
-    /*
-    This method will return the next 20 departures (or less if not existing) from a given point
-     in time or the next departures in a given timespan. The service can only be called for stops/stations
-      by using according ID retrieved by the location method. The parameter is called id. The time and date
-       are defined with the parameters date and time.
-    
-    */
-    //2journyDetail arrival times can not be called directly
-    //3 /trip from which time a bus will leave
+//Get orgin-dest points stops
+app.post('/searchTrip', function (req, res) {
+    handleGetTwoPointsStops_1["default"](req, res, axios_1["default"]);
 });
+//Get all stops 
 app.get('/locations', function (req, res) {
-    fileSytem.readFile('locations.json', function (error, data) {
-        if (error) {
-            console.log(error);
-        }
-        var dataParse = JSON.parse(data);
-        res.json(dataParse);
-    });
+    handleGetAllStops_1["default"](fileSytem, res);
 });
 var port = 5000;
 app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
