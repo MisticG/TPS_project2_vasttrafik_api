@@ -2,6 +2,7 @@ import React, { Component, CSSProperties } from 'react';
 import Autosuggest2 from './autoSuggestions/autoSuggestion2'
 import Form from './forms/Form';
 import axios from 'axios';
+import Trip from './trips/trip';
 interface location {
     name: string;
     id: number;
@@ -15,18 +16,16 @@ interface State {
     start:string,
     end:string,
     date:string,
-
     choosenStart:location,
     chooosenEnd:location,
     ankAvg:string,
-    text:string
+    text:string,
+    trips:any
 
    
 }
 
-interface Props {
-
-}
+interface Props {}
 export default class App extends Component<Props, State> {
     constructor(props:Props){
         super(props);
@@ -37,7 +36,8 @@ export default class App extends Component<Props, State> {
             ankAvg:'',
             choosenStart:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
             chooosenEnd:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
-            text:''
+            text:'',
+            trips:[]
             
         }
     }
@@ -52,11 +52,8 @@ export default class App extends Component<Props, State> {
       
     }
 
-
     searchTrip = async ()=> {
-    
         let isDepOrArrTime = this.state.ankAvg === 'arraivle'?1:0;
-        console.log(isDepOrArrTime)
         let data = 
         {originId:this.state.choosenStart.id,
         destId:this.state.chooosenEnd.id,
@@ -64,14 +61,19 @@ export default class App extends Component<Props, State> {
         time:this.state.text,
         isDepOrArrTime:isDepOrArrTime
         }
-        let response = await axios.post('/searchTrip', data);
-        let actuallResponse = await response.data;
+        try {
+            
+            let response = await axios.post('/searchTrip', data);
 
-        console.log(actuallResponse, 'here is from axios')
+            let actuallResponse = await response.data;
+            response.status === 200 ? this.setState({trips:actuallResponse}): this.setState({trips:[]});
+    
+            console.log(actuallResponse, 'here is from axios')
+        }catch(error){
+            
+            console.log('Could not search current trip')
         }
-
-
-
+    }
 
     handleOnchange= ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({[event.target.type]:event.target.value} as Pick<State, any>) }
 
@@ -85,11 +87,21 @@ export default class App extends Component<Props, State> {
         
         this.setState({chooosenEnd:value})
     }
+    renderTrips = ()=>{
+        if(this.state.trips.length > 0){
+            return <Trip trips={this.state.trips}/>
+        } else {
+            return ''
+        }
+
+    }
   
+
     render() {
-        return (<div style={formStyle}>
-                <span>It my take 5 seconds... before loading result</span>
-               
+        return (
+        <div style={formStyle}>
+
+            <span>It my take 5 seconds... before loading result</span>
             <Form> 
             <form onSubmit={this.handleSubmit} style={formStyle}>
                 <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
@@ -99,19 +111,15 @@ export default class App extends Component<Props, State> {
                {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
                 <label>Tid: ex 14:00 <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
                 <select value={this.state.ankAvg} onChange={this.handleSelect}>
-                    <option value='departure'>Avgående</option>
+                    <option defaultChecked value='departure'>Avgående</option>
                     <option value={'arraivle'}>Akommande</option>
                 </select>
-        
+                
                 <input type="submit" value="Söka" />
             </form>
            </Form>
-
-
-
-
-
-                </div> 
+            {this.renderTrips()}
+        </div> 
 )
     }
 }
