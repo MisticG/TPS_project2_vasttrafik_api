@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as fileSytem from 'file-system'
 import getTwoPointStops from './handlers/handleGetTwoPointsStops';
 import  getAllStops from './handlers/handleGetAllStops';
+import getTripDetail from './handlers/HandleGetTripDetail'
 const app:express.Application = express();
 
 app.use(bodyParser.json());
@@ -54,17 +55,24 @@ app.get('/', (req:express.Request, res:express.Response)=>{
     res.send('holla')
 
 })
-//Get orgin-dest points stops
-app.post('/searchTrip',(req:express.Request, res:express.Response)=>{
- 
-    getTwoPointStops(req, res, axios);
-})
-
 //Get all stops 
 app.get('/locations', (req:express.Request, res:express.Response)=>{
     getAllStops(fileSytem,res);
    
 })
+//Get orgin-dest points stops
+app.post('/searchTrip',(req:express.Request, res:express.Response)=>{
+ 
+    getTwoPointStops(req, res, axios);
+})
+//Get stop stations of specefic trip
+
+app.post('/getTripDetail', (req:express.Request, res:express.Response)=>{
+    getTripDetail(req, res, axios)
+})
+
+
+
 
 
 const port = 5000;

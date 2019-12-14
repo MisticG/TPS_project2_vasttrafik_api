@@ -43,11 +43,14 @@ export default class App extends Component<Props, State> {
     }
 
     handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
-        event.preventDefault();
       
-        if( this.state.choosenStart.name !== '' && this.state.chooosenEnd .name !== '') {
+        event.preventDefault();
+        
+        if( this.state.choosenStart.name !== '' && this.state.chooosenEnd .name !== '' && this.state.text.substring(2,3) === ":") {
 
             this.searchTrip()
+        } else {
+            alert('Fyll alla inputs eller du har fyllt fel uppgifter.')
         }
       
     }

@@ -43,6 +43,7 @@ var axios_1 = require("axios");
 var fileSytem = require("file-system");
 var handleGetTwoPointsStops_1 = require("./handlers/handleGetTwoPointsStops");
 var handleGetAllStops_1 = require("./handlers/handleGetAllStops");
+var HandleGetTripDetail_1 = require("./handlers/HandleGetTripDetail");
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -90,13 +91,17 @@ app.get('/', function (req, res) {
     //test ()
     res.send('holla');
 });
+//Get all stops 
+app.get('/locations', function (req, res) {
+    handleGetAllStops_1["default"](fileSytem, res);
+});
 //Get orgin-dest points stops
 app.post('/searchTrip', function (req, res) {
     handleGetTwoPointsStops_1["default"](req, res, axios_1["default"]);
 });
-//Get all stops 
-app.get('/locations', function (req, res) {
-    handleGetAllStops_1["default"](fileSytem, res);
+//Get stop stations of specefic trip
+app.post('/getTripDetail', function (req, res) {
+    HandleGetTripDetail_1["default"](req, res, axios_1["default"]);
 });
 var port = 5000;
 app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
