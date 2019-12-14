@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 
-interface state {
-  value:string
-}
 
-export default class InputForm extends React.Component<{}, state> {
-  constructor(props:any) {
-    super(props);
-    this.state = {value: ''};
+ class InputForm extends Component {
 
-    this.handleChange = this.handleChange.bind(this);
+  state ={
+    fromInput:'',
+    toInput:''
+
+  };
+
+  onChange = (e:any) =>{
+    this.setState({fromInput: e.target.value});
+    this.setState({toInput: e.target.value});
+  }
+
+/*     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -20,7 +25,7 @@ export default class InputForm extends React.Component<{}, state> {
   handleSubmit(event:any) {
     alert('A name was submitted: ' + this.state.value);
     event.preventDefault();
-  }
+  } */
 
 
 
@@ -29,15 +34,15 @@ export default class InputForm extends React.Component<{}, state> {
     return (
       <div className="card card-body mb-4 p-4">
         <h1 className= "display-4 text-center">Välkommen Till Västtrafik</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <div className="form-group">
             <input
             type="text"
             className="form-control form-control-lg mb-4"
             placeholder="From:"
             name="fromInput"
-            value={this.state.value}
-            onChange={this.handleChange}  
+            value={this.state.fromInput}
+            onChange={this.onChange}  
             />
         
             <input
@@ -45,8 +50,8 @@ export default class InputForm extends React.Component<{}, state> {
             className="form-control form-control-lg mb-4"
             placeholder="To:"
             name="toInput"
-            value={this.state.value}
-            onChange={this.handleChange} 
+            value={this.state.toInput}
+            onChange={this.onChange} 
             />
 
             <button
@@ -62,3 +67,5 @@ export default class InputForm extends React.Component<{}, state> {
     );
   }
 }
+
+export default InputForm;
