@@ -2,6 +2,7 @@
 export default async function getTwoPointStops(req, res, axios){
     
     let data = req.body;
+    console.log(data);
     let url = `https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=${data.originId}&destId=${data.destId}&time=${data.time}&searchForArrival=${data.isDepOrArrTime}&date=${data.date}&needJourneyDetail=1&format=json`;
     try {
         //We get current journy
@@ -16,7 +17,7 @@ export default async function getTwoPointStops(req, res, axios){
         response.status === 200 ? awaitResponse: [];
 
         let trips = awaitResponse.TripList.Trip;
-        console.log(trips)
+        console.log(response);
         typeof awaitResponse.errorText === undefined ? res.json([]):res.json(trips)
         
     } catch(error) {

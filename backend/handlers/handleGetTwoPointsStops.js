@@ -43,6 +43,7 @@ function getTwoPointStops(req, res, axios) {
             switch (_a.label) {
                 case 0:
                     data = req.body;
+                    console.log(data);
                     url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&needJourneyDetail=1&format=json";
                     _a.label = 1;
                 case 1:
@@ -59,7 +60,7 @@ function getTwoPointStops(req, res, axios) {
                     awaitResponse = _a.sent();
                     response.status === 200 ? awaitResponse : [];
                     trips = awaitResponse.TripList.Trip;
-                    console.log(trips);
+                    console.log(response);
                     typeof awaitResponse.errorText === undefined ? res.json([]) : res.json(trips);
                     return [3 /*break*/, 5];
                 case 4:

@@ -1,47 +1,59 @@
 import React, { Component, CSSProperties } from 'react';
 import axios from 'axios';
 
-interface State {
- 
 
+interface State {
+  
+}
+
+interface stopStations {
+    depDate:string, 
+    depTime: string,
+    id: string, 
+    lat: string,
+    lon: string,
+    name: string,
+    routeIdx: string,
+    track:string,
+  
+}
+
+interface Props{
+    stopStations:stopStations[],
+    originIdx:string,
+    destIdx:string,
+    flagg:boolean,
+    trips:any
+   
    
 }
 
-interface Props {
-   ref:string
-}
 export default class TripDetail extends Component<Props, State> {
     constructor(props:Props){
         super(props);
         
     }
-    getTripDetail = async ()=>{
-        
-        let data = {
-            ref: this.props.ref
-        }
-        console.log(this.props.ref)
-        console.log(data)
-        try {
-            let response = await axios.post('/getTripDetail', data);
 
-            let actuallResponse = await response.data;
-            console.log(actuallResponse, 'here is trip detail')
-        } catch(error) {
-            
-            console.log('Could not get trip details')
-        }
-    }
+    renderStopStations = ()=> {
+      
 
-    renderTripDetail = ()=> {
-        console.log(this.props.ref)
-        return ''
+        return this.props.stopStations.filter((station:{ depDate:string, depTime: string, id: string, lat: string,lon: string,name: string,routeIdx: string,track:string})=>{
+
+            if(station.routeIdx >= this.props.originIdx && station.routeIdx <= this.props.destIdx && this.props.flagg === true) {
+                return station
+            }
+        }).map((station:{ depDate:string, depTime: string, id: string, lat: string,lon: string,name: string,routeIdx: string,track:string})=>{
+        return <li>Station Namn: {station.name}  AvgTid: {station.depTime}</li>
+
+        })
     }
+           
+  
     render() {
        
-        return <div>
-            <button onClick={ this.getTripDetail}>Visa Alla hållplatser</button>
-        </div>
+        return<ul>
+            {this.renderStopStations()}
+        </ul>
 
         
     }

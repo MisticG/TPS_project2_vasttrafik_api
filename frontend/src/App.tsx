@@ -92,6 +92,7 @@ export default class App extends Component<Props, State> {
     }
     renderTrips = ()=>{
         if(this.state.trips.length > 0){
+            console.log(this.state.trips, 'here is trips')
             return <Trip trips={this.state.trips}/>
         } else {
             return ''

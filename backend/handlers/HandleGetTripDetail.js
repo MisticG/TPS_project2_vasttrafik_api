@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 function getTripDetail(req, res, axios) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, response, awaitResponse, error_1;
+        var data, response, awaitResponse, journeyDetail, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -58,8 +58,9 @@ function getTripDetail(req, res, axios) {
                 case 3:
                     awaitResponse = _a.sent();
                     response.status === 200 ? awaitResponse : [];
-                    console.log(awaitResponse);
-                    typeof awaitResponse.errorText === undefined ? res.json([]) : res.json(awaitResponse);
+                    journeyDetail = awaitResponse.JourneyDetail.Stop;
+                    console.log(journeyDetail);
+                    typeof awaitResponse.errorText === undefined ? res.json([]) : res.json(journeyDetail);
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();

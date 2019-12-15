@@ -13,8 +13,9 @@ export default async function getTripDetail(req, res, axios){
 
         let awaitResponse = await response.data
         response.status === 200 ? awaitResponse: [];
-        console.log(awaitResponse)
-        typeof awaitResponse.errorText === undefined ? res.json([]):res.json(awaitResponse)
+        let journeyDetail = awaitResponse.JourneyDetail.Stop
+        console.log(journeyDetail)
+        typeof awaitResponse.errorText === undefined ? res.json([]):res.json(journeyDetail)
         
     } catch(error) {
         res.json([]);

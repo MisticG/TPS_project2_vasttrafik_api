@@ -1,8 +1,26 @@
 import React, { Component, CSSProperties } from 'react';
 import axios from 'axios';
 import TripDetail from '../tripDetails/tripDetail'
+interface stopStations {
+    depDate:string, 
+    depTime: string,
+    id: string, 
+    lat: string,
+    lon: string,
+    name: string,
+    routeIdx: string,
+    track:string,
+  
+}
+
 interface State {
- 
+    stopStations:stopStations[],
+    originIdx:string,
+    destIdx:string,
+    flagg:boolean,
+    tripI:number,
+    legI:number
+   
    
 }
 
@@ -10,54 +28,103 @@ interface Props {
     trips:any
 }
 export default class Trip extends Component<Props, State> {
+    constructor(props:Props){
+        super(props);
+        this.state = {stopStations:[{ depDate:'', 
+            depTime: '',
+            id: '', 
+            lat: '',
+            lon: '',
+            name: '',
+            routeIdx: '',
+            track:''}], originIdx:'',destIdx:'',
+            flagg:false,
+            tripI:0,
+            legI:0
+        }
 
+           
+        }
     
-    sendRef = async (ref:string)=>{
-        
+    
+    sendRef = async (ref:string, orginIdx:string, destIdx:string, legIndex:number, i:number)=>{
+            console.log(legIndex, i, 'here are indexes')
         let data = {
             ref: ref
         }
-        console.log(ref)
-        console.log(data)
+     
         try {
             let response = await axios.post('/getTripDetail', data);
 
             let actuallResponse = await response.data;
-            console.log(actuallResponse, 'here is trip detail')
+            if(this.state.originIdx !== '' && this.state.destIdx !== '') {
+                this.setState({stopStations:[{ depDate:'', 
+                depTime: '',
+                id: '', 
+                lat: '',
+                lon: '',
+                name: '',
+                routeIdx: '',
+                track:''}], originIdx:'',destIdx:''})
+            } else {
+                
+            }
+            this.setState({stopStations:actuallResponse, originIdx:orginIdx, destIdx:destIdx, flagg:true, tripI:legIndex,legI:i})
         } catch(error) {
-            
-            console.log('Could not get trip details')
+            alert('Could not get trip details');
+            console.log(`Error: ${error}`)
         }
-        
+
     }
     
-
+    renderStopStations = ()=>{
+        if(this.state.stopStations.length > 0 ) {
+            console.log('vi sätter state here')
+            return <TripDetail stopStations={this.state.stopStations} originIdx={this.state.originIdx} destIdx={this.state.destIdx} flagg={this.state.flagg} trips={this.props.trips}/>
+        } else {
+            return ''
+        }
+    }
    
     renderTrips = ()=>{
-        return this.props.trips.map((trip:any)=>{
-            let test = trip.Leg.map((leg:any)=>{
-            
-                if(leg.type !== "WALK") {
-
-                return <ul> 
-
-                            <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
-                            <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
-                         
-                            <button onClick={()=> this.sendRef(leg.JourneyDetailRef.ref)}>Visa Alla Hållplatser</button>
-                            
-                        </ul>
-                } else {
-                    return <ul> 
-
-                            <li> Läge A   Namn: {leg.Origin.name } Tid: {leg.Origin.time}</li>
-                            <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
-                        </ul>
-                }
+        console.log(this.props.trips);
+       
+        return this.props.trips.map((trip:any, index:number)=>{
+         
+            if(trip.Leg.length > 0 ){
+              
+                let test = trip.Leg.map((leg:any, i:number)=>{
                     
+                
+                    if(leg.type !== "WALK") {
+    
+                    return <ul> 
+    
+                                <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
+                                <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
+                             
+                                <button onClick={()=> this.sendRef(
+                                   leg.JourneyDetailRef.ref, leg.Origin.routeIdx,leg.Destination.routeIdx, index,i
 
-            })
-        return <div style={tripContainer}> Here is one trip: {test}</div>
+
+                                     
+                                     )}>Visa Alla Hållplatser</button>
+                                { this.state.tripI === index && this.state.legI === i ? this.renderStopStations():''}
+                              
+                                
+                            </ul>
+                    } else {
+                        return <ul> 
+    
+                                <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
+                                <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
+                            </ul>
+                    }
+                        
+    
+                })
+                return <div style={tripContainer}> Here is one trip: {test}</div>
+            }
         })
 
     }
