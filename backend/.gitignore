@@ -1,2 +1,4 @@
-/keys.js
-/keys.ts
+/handlers/keys.js
+/handlers/keys.ts
+
+/allLocation.json
