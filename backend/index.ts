@@ -11,7 +11,11 @@ app.get('/',(req:express.Request, res:express.Response)=>{
 })
 
 app.post('/', (req:express.Request, res:express.Response) => {
-    req.body('hej')
+    // Formulär data
+    const to = req.body.to
+    const from = req.body.from
+    // Skicka till västtrafik för att hämta Stops
+    // Skicka tillbaka till klienten 
 })
 
 

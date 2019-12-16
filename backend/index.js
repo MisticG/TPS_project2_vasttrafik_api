@@ -9,7 +9,7 @@ app.get('/', function (req, res) {
     res.send('Hell haahahah');
 });
 app.post('/', function (req, res) {
-    req.body('hej');
+    // {to: VALUE_OF_TO, from: VALUEO_OF_FROM}
 });
 var port = 5000;
 app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+//Skapa en form med två input - en "från" och en "till". Värdena ska skickas till backend.
+
+//Det ska vara möjligt att kunna se värdena som man har skickat från frontend till index.ts(backend) via console.log i backend.
 
  class InputForm extends Component {
 
@@ -9,9 +12,28 @@ import React, { Component } from 'react';
 
   };
 
+  findTrip = (e:any) =>{
+    e.preventDefault();
+
+    const payload = {
+      to: this.state.toInput,
+      from: this.state.fromInput
+    }
+
+    fetch('SOME URL', {
+      body: JSON.stringify(payload)
+    })
+  /*   axios
+    .get(`http:apikey.InputF`)
+    .then(res=>{
+      //console.log(res.data);
+      this.setState({trip_list: res.data.message.body.trip_list});
+    })
+    .catch(err => console.log(err)); */
+  }
+
   onChange = (e:any) =>{
-    this.setState({fromInput: e.target.value});
-    this.setState({toInput: e.target.value});
+    this.setState({[e.target.name]: e.target.value});
   }
 
 /*     this.handleChange = this.handleChange.bind(this);
@@ -34,7 +56,7 @@ import React, { Component } from 'react';
     return (
       <div className="card card-body mb-4 p-4">
         <h1 className= "display-4 text-center">Välkommen Till Västtrafik</h1>
-        <form>
+        <form onSubmit={this.findTrip}>
           <div className="form-group">
             <input
             type="text"
