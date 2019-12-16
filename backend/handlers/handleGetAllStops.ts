@@ -10,4 +10,4 @@ export default async function getAllStops(fileSytem,res){
         res.json(dataParse)
     })
 
-}
+} 

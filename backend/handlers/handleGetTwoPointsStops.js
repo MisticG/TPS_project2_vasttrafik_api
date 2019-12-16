@@ -60,8 +60,9 @@ function getTwoPointStops(req, res, axios) {
                     awaitResponse = _a.sent();
                     response.status === 200 ? awaitResponse : [];
                     trips = awaitResponse.TripList.Trip;
-                    console.log(response);
-                    typeof awaitResponse.errorText === undefined ? res.json([]) : res.json(trips);
+                    //console.log(response);
+                    console.log(trips.length, 'here');
+                    typeof awaitResponse.errorText === undefined && trips === undefined ? res.json([]) : res.json(trips);
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();

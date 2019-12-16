@@ -68,8 +68,8 @@ export default class Trip extends Component<Props, State> {
                 track:''}], originIdx:'',destIdx:''})
             } else {
                 
+                this.setState({stopStations:actuallResponse, originIdx:orginIdx, destIdx:destIdx, flagg:true, tripI:legIndex,legI:i})
             }
-            this.setState({stopStations:actuallResponse, originIdx:orginIdx, destIdx:destIdx, flagg:true, tripI:legIndex,legI:i})
         } catch(error) {
             alert('Could not get trip details');
             console.log(`Error: ${error}`)
@@ -87,8 +87,7 @@ export default class Trip extends Component<Props, State> {
     }
    
     renderTrips = ()=>{
-        console.log(this.props.trips);
-       
+     
         return this.props.trips.map((trip:any, index:number)=>{
          
             if(trip.Leg.length > 0 ){
@@ -109,6 +108,7 @@ export default class Trip extends Component<Props, State> {
 
                                      
                                      )}>Visa Alla Hållplatser</button>
+                                
                                 { this.state.tripI === index && this.state.legI === i ? this.renderStopStations():''}
                               
                                 

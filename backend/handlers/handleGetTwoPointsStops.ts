@@ -11,14 +11,15 @@ export default async function getTwoPointStops(req, res, axios){
             Authorization: `Bearer ${res.locals.token}`,
             }})
 
-
+ 
         let awaitResponse = await response.data;
       
         response.status === 200 ? awaitResponse: [];
-
+        //console.log(response)
         let trips = awaitResponse.TripList.Trip;
-        console.log(response);
-        typeof awaitResponse.errorText === undefined ? res.json([]):res.json(trips)
+        //console.log(response);
+        console.log(trips.length, 'here')
+        typeof awaitResponse.errorText === undefined && trips === undefined ? res.json([]):res.json(trips)
         
     } catch(error) {
         res.json([]);

@@ -47,7 +47,7 @@ var HandleGetTripDetail_1 = require("./handlers/HandleGetTripDetail");
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/', HandleaccessToken_1.handleAccesstoken.formHandler);
+app.use([HandleaccessToken_1.handleAccesstoken.formHandler, HandleaccessToken_1.handleAccesstoken.handleError]);
 app.get('/', function (req, res) {
     function test() {
         return __awaiter(this, void 0, void 0, function () {

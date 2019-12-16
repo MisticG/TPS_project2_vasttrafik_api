@@ -72,14 +72,14 @@ export default class App extends Component<Props, State> {
             response.status === 200 ? this.setState({trips:actuallResponse}): this.setState({trips:[]});
     
             console.log(actuallResponse, 'here is from axios')
-        }catch(error){
+        } catch(error) {
             
             console.log('Could not search current trip')
         }
     }
 
     handleOnchange= ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({[event.target.type]:event.target.value} as Pick<State, any>) }
-
+ 
     handleSelect = (event: any) => { this.setState({ankAvg:event.target.value}) }
 
     getStartValue = (value:{name: string, id: number, lat: number, lon: number,weight: number,track: string})=>{
@@ -98,6 +98,12 @@ export default class App extends Component<Props, State> {
             return ''
         }
 
+    }
+    renderFiltering = ()=>{
+        let filters = ['Spårvagn', 'Buss', 'Båt', 'Överiga tåg'];
+        filters.map((filter)=>{
+
+        })
     }
   
 
@@ -118,7 +124,10 @@ export default class App extends Component<Props, State> {
                     <option defaultChecked value='departure'>Avgående</option>
                     <option value={'arraivle'}>Akommande</option>
                 </select>
-                
+                <ul>
+                    
+                </ul>
+
                 <input type="submit" value="Söka" />
             </form>
            </Form>

@@ -38,31 +38,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var keys_1 = require("./keys");
 var axios_1 = require("axios");
+var moment = require("moment");
 var token = '';
+var tokenTimeExpires = null;
+var nowDate = new Date();
+var now = moment(nowDate, 'YYYY-MM-DD[T]HH:mm[Z]');
 exports.handleAccesstoken = {
     formHandler: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var url, response, resAc;
+        var tokenTime, diff, url, response, resAc;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!(token == '')) return [3 /*break*/, 2];
+                    tokenTime = now.add(tokenTimeExpires, 'seconds');
+                    diff = tokenTime.isAfter(nowDate);
+                    if (!(token === '' && diff === false)) return [3 /*break*/, 2];
                     url = "https://api.vasttrafik.se/token";
                     return [4 /*yield*/, axios_1["default"].request({ method: 'post', url: url, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, data: "grant_type=client_credentials&client_id=" + keys_1.keys.key + "&client_secret=" + keys_1.keys.secret })];
                 case 1:
                     response = _a.sent();
                     resAc = response.data;
                     token = response.data.access_token;
-                    console.log(token, 'is getting new fot the first time');
+                    tokenTimeExpires = response.data.expires_in;
+                    console.log(token, 'new');
+                    res.locals.token;
                     return [3 /*break*/, 3];
                 case 2:
-                    console.log(token, 'token exist');
+                    res.locals.token = token;
                     _a.label = 3;
                 case 3:
-                    console.log(token, 'here');
-                    res.locals.token = token;
+                    console.log(tokenTimeExpires, 'Expires times');
+                    console.log(diff, 'isAfter');
+                    console.log(now.format('YYYY-MM-DD[T]HH:mm[Z]'), 'now');
+                    console.log(token, 'token');
                     next();
                     return [2 /*return*/];
             }
         });
-    }); }
+    }); }, handleError: function (error, req, res, next) {
+        if (error) {
+            return next(error);
+        }
+        res.status(500);
+        res.render('error on server token', { error: error });
+    }
 };

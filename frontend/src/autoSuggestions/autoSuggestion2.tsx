@@ -86,13 +86,13 @@ export default class Autosuggest2 extends React.Component<Props,State> {
 
       onSuggestionsFetchRequested = async ({ value }:any) => {
           let data =  await  this.getSuggestions(value);
-          
-        this.setState({ suggestions:data });
+          this.setState({ suggestions:data });
+        
           
       };
       rendIsLoading = ()=>{
-        let loading  = this.state.suggestions.length > 0 ? 'Is loding ...': '';
-        return loading
+        return this.state.suggestions.length < 0 ? 'Is loding ...': '';
+      
       }
      
       onSuggestionsClearRequested = () => {

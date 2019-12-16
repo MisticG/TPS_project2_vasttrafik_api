@@ -59,7 +59,7 @@ function getTripDetail(req, res, axios) {
                     awaitResponse = _a.sent();
                     response.status === 200 ? awaitResponse : [];
                     journeyDetail = awaitResponse.JourneyDetail.Stop;
-                    console.log(journeyDetail);
+                    console.log(journeyDetail.length);
                     typeof awaitResponse.errorText === undefined ? res.json([]) : res.json(journeyDetail);
                     return [3 /*break*/, 5];
                 case 4:

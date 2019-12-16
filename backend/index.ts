@@ -5,13 +5,14 @@ import axios from 'axios';
 import * as fileSytem from 'file-system'
 import getTwoPointStops from './handlers/handleGetTwoPointsStops';
 import  getAllStops from './handlers/handleGetAllStops';
-import getTripDetail from './handlers/HandleGetTripDetail'
+import getTripDetail from './handlers/HandleGetTripDetail';
+
 const app:express.Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
-app.use('/', handleAccesstoken.formHandler)
+app.use([handleAccesstoken.formHandler, handleAccesstoken.handleError])
 
 app.get('/', (req:express.Request, res:express.Response)=>{
    
