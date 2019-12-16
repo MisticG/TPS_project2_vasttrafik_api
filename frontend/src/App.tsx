@@ -41,12 +41,12 @@ export default class App extends Component<Props, State> {
             
         }
     }
-
+   
     handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
-      
+       
         event.preventDefault();
         
-        if( this.state.choosenStart.name !== '' && this.state.chooosenEnd .name !== '' && this.state.text.substring(2,3) === ":") {
+        if( this.state.choosenStart.name !== '' && this.state.chooosenEnd.name !== '' && this.state.text.substring(2,3) === ":") {
 
             this.searchTrip()
         } else {
@@ -69,7 +69,7 @@ export default class App extends Component<Props, State> {
             let response = await axios.post('/searchTrip', data);
 
             let actuallResponse = await response.data;
-            response.status === 200 ? this.setState({trips:actuallResponse}): this.setState({trips:[]});
+            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse}):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {
@@ -90,7 +90,7 @@ export default class App extends Component<Props, State> {
         
         this.setState({chooosenEnd:value})
     }
-    renderTrips = ()=>{
+    renderTrips = ()=> {
         if(this.state.trips.length > 0){
             console.log(this.state.trips, 'here is trips')
             return <Trip trips={this.state.trips}/>
@@ -108,6 +108,7 @@ export default class App extends Component<Props, State> {
   
 
     render() {
+        console.log('holla')
         return (
         <div style={formStyle}>
 

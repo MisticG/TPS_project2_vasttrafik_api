@@ -36,15 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-function getTwoPointStops(req, res, axios) {
+function getTrafikInfo(req, res, axios) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, url, response, awaitResponse, trips, error_1;
+        var data, url, response, awaitResponse, dat, specefikTrafikInfo, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     data = req.body;
                     console.log(data);
-                    url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&needJourneyDetail=1&format=json";
+                    url = "https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard?id=" + data.id + "&date=" + data.date + "&time=" + data.time + "&format=json";
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, , 5]);
@@ -58,11 +58,10 @@ function getTwoPointStops(req, res, axios) {
                     return [4 /*yield*/, response.data];
                 case 3:
                     awaitResponse = _a.sent();
-                    response.status === 200 ? awaitResponse : [];
-                    trips = awaitResponse.TripList.Trip;
-                    //console.log(response);
-                    console.log(trips, 'here');
-                    typeof awaitResponse.errorText === undefined || trips === undefined ? res.json([]) : res.json(trips);
+                    dat = response.status === 200 ? awaitResponse.DepartureBoard.Departure : [];
+                    console.log(dat.length, 'here is response');
+                    specefikTrafikInfo = renderSpecefikTrafikInfo(dat, data.journeyNumber);
+                    typeof awaitResponse.errorText === undefined && dat === undefined ? res.json([]) : res.json(specefikTrafikInfo);
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();
@@ -74,66 +73,16 @@ function getTwoPointStops(req, res, axios) {
         });
     });
 }
-exports["default"] = getTwoPointStops;
-function axiosRequest(axios, url, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, awaitResponse;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, axios.get(url, {
-                        headers: {
-                            Authorization: "Bearer " + res.locals.token
-                        }
-                    })];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.data];
-                case 2:
-                    awaitResponse = _a.sent();
-                    return [4 /*yield*/, awaitResponse];
-                case 3: return [2 /*return*/, _a.sent()];
+exports["default"] = getTrafikInfo;
+function renderSpecefikTrafikInfo(data, journeyNumber) {
+    if (data.length > 0) {
+        var speceficInfo = data.filter(function (trip) {
+            if (trip.journeyNumber === journeyNumber) {
+                return trip;
             }
+        }).map(function (trip) {
+            return trip;
         });
-    });
+        return speceficInfo[0].rtTime !== undefined ? speceficInfo : [];
+    }
 }
-function getTripsWithDetails(trips, axios, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var test, f, tr;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    test = [];
-                    return [4 /*yield*/, trips.filter(function (trip) {
-                            return trip.Leg.filter(function (leg) {
-                                if (leg.JourneyDetailRef && leg.JourneyDetailRef !== undefined) {
-                                    axiosRequest(axios, leg.JourneyDetailRef.ref, res).then(function (details) {
-                                        leg.details = details.JourneyDetail;
-                                        test.push(leg);
-                                    }).then(function () {
-                                        console.log(test);
-                                    });
-                                }
-                            });
-                        })];
-                case 1:
-                    f = _a.sent();
-                    return [4 /*yield*/, test];
-                case 2:
-                    tr = _a.sent();
-                    console.log(tr);
-                    return [2 /*return*/, tr];
-            }
-        });
-    });
-}
-/*
-//1departureBoard uses id from all locations and return the next 20 stops by giving time
-This method will return the next 20 departures (or less if not existing) from a given point
-    in time or the next departures in a given timespan. The service can only be called for stops/stations
-    by using according ID retrieved by the location method. The parameter is called id. The time and date
-    are defined with the parameters date and time.
-
-
-//2journyDetail arrival times can not be called directly
-//3 /trip from which time a bus will leave
-*/ 

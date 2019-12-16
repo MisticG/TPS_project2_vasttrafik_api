@@ -18,8 +18,8 @@ export default async function getTwoPointStops(req, res, axios){
         //console.log(response)
         let trips = awaitResponse.TripList.Trip;
         //console.log(response);
-        console.log(trips.length, 'here')
-        typeof awaitResponse.errorText === undefined && trips === undefined ? res.json([]):res.json(trips)
+        console.log(trips, 'here')
+        typeof awaitResponse.errorText === undefined || trips === undefined ? res.json([]):res.json(trips)
         
     } catch(error) {
         res.json([]);

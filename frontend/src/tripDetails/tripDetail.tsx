@@ -32,16 +32,16 @@ export default class TripDetail extends Component<Props, State> {
     constructor(props:Props){
         super(props);
         
-    }
+    } 
 
     renderStopStations = ()=> {
       // 5 9 något som är större än 5 men mindre eller lika med 9
 
         let data =  this.props.stopStations.filter((station:{ depDate:string, depTime: string, id: string, lat: string,lon: string,name: string,routeIdx: string,track:string})=>{
 
-            //if(station.routeIdx >= this.props.originIdx && station.routeIdx <= this.props.destIdx) {
+            if(Number(station.routeIdx) >= Number(this.props.originIdx) && Number(station.routeIdx) <= Number(this.props.destIdx)) {
                 return station
-            //}
+            }
         }).map((station:{ depDate:string, depTime: string, id: string, lat: string,lon: string,name: string,routeIdx: string,track:string})=>{
         return <li>Station Namn: {station.name}  AvgTid: {station.depTime}</li>
 
