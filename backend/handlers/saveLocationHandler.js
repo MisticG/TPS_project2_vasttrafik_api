@@ -38,26 +38,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var keys_1 = require("./keys");
 var axios_1 = require("axios");
-//import * as express from 'express';
 var fs = require("file-system");
 var authenticationHandler_1 = require("./authenticationHandler");
-//import { myCache } from './authenticationHandler';
-//import * as moment from 'moment';
-//const querystring = require('querystring');
-//let oldTime: moment.Moment;
-exports.locationHandler = {
-    //saveAllLocation : async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    saveAllLocation: function () { return __awaiter(void 0, void 0, void 0, function () {
+function saveAllLocation() {
+    return __awaiter(this, void 0, void 0, function () {
         var url, token, headers, request, response, allLocationData, data, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log('In saveAllLocation...');
                     url = keys_1.keys.allLocationUrl;
-                    return [4 /*yield*/, authenticationHandler_1["default"]()
-                        // Get token from cache
-                        //let token = myCache.token;
-                    ];
+                    return [4 /*yield*/, authenticationHandler_1["default"]()];
                 case 1:
                     token = _a.sent();
                     headers = {
@@ -66,8 +56,6 @@ exports.locationHandler = {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 5, , 6]);
-                    // if-sats som i authenticationsHandler fast en dag framåt och inte sekunder.
-                    console.log("trying...");
                     return [4 /*yield*/, axios_1["default"].get(url, { headers: headers })];
                 case 3:
                     request = _a.sent();
@@ -77,18 +65,14 @@ exports.locationHandler = {
                     if (request.status === 200) {
                         allLocationData = response.LocationList.StopLocation;
                         data = JSON.stringify(allLocationData, null, 2);
-                        //console.log()
                         fs.writeFile('./allLocation.json', data, function (err, fs) {
                             if (err)
                                 throw err;
                             console.log('filesUpdated');
                         });
-                        console.log("Location data length: ", allLocationData.length);
-                        // res.json({text: 'test'})
                     }
                     else {
                         console.log("Error saveLocationHandler...");
-                        //console.error
                     }
                     return [3 /*break*/, 6];
                 case 5:
@@ -98,5 +82,6 @@ exports.locationHandler = {
                 case 6: return [2 /*return*/];
             }
         });
-    }); }
-};
+    });
+}
+exports["default"] = saveAllLocation;

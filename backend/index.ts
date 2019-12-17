@@ -17,13 +17,10 @@ setInterval(saveAllLocation, 1000 * 30)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
-//app.use('/', handleAuthenticate.authenticate);
-
 //app.use('/searchJourney')
 
 app.get('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.send({myCache: handleToken()})
-   // res.send({token: res.locals.token})
+    res.send({handleToken})
 })
 
 const port = 5000;
