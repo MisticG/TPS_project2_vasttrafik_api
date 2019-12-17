@@ -39,18 +39,27 @@ exports.__esModule = true;
 var keys_1 = require("./keys");
 var axios_1 = require("axios");
 var moment = require("moment");
+var querystring = require("querystring");
 var time;
 function handleToken() {
     return __awaiter(this, void 0, void 0, function () {
-        var nowDate, now, url, response, token, expires_in;
+        var nowDate, now, url, data, headers, response, token, expires_in;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     nowDate = new Date();
                     now = moment(nowDate, 'YYYY-MM-DD[T]HH:mm:ss[Z]');
                     time === undefined || time === null ? now : time;
-                    url = "https://api.vasttrafik.se/token";
-                    return [4 /*yield*/, axios_1["default"].request({ method: 'post', url: url, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, data: "grant_type=client_credentials&client_id=" + keys_1.keys.key + "&client_secret=" + keys_1.keys.secret })];
+                    url = keys_1.keys.oauthUrl;
+                    data = querystring.stringify({
+                        'grant_type': 'client_credentials',
+                        'client_id': keys_1.keys.key,
+                        'client_secret': keys_1.keys.secret
+                    });
+                    headers = {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    };
+                    return [4 /*yield*/, axios_1["default"].request({ method: 'post', url: url, headers: headers, data: data })];
                 case 1:
                     response = _a.sent();
                     token = response.data.access_token;
