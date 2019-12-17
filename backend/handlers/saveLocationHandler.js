@@ -38,56 +38,64 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var keys_1 = require("./keys");
 var axios_1 = require("axios");
+//import * as express from 'express';
 var fs = require("file-system");
+var authenticationHandler_1 = require("./authenticationHandler");
+//import { myCache } from './authenticationHandler';
 //import * as moment from 'moment';
 //const querystring = require('querystring');
 //let oldTime: moment.Moment;
 exports.locationHandler = {
-    saveAllLocation: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var url, token, headers, request, response, allLocationData, data, filesUpdated, error_1;
+    //saveAllLocation : async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    saveAllLocation: function () { return __awaiter(void 0, void 0, void 0, function () {
+        var url, token, headers, request, response, allLocationData, data, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    console.log('In saveAllLocation...');
                     url = keys_1.keys.allLocationUrl;
-                    token = res.locals.token;
+                    return [4 /*yield*/, authenticationHandler_1["default"]()
+                        // Get token from cache
+                        //let token = myCache.token;
+                    ];
+                case 1:
+                    token = _a.sent();
                     headers = {
                         'Authorization': 'Bearer ' + token
                     };
-                    console.log("I saveAllLocation...");
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 4, , 5]);
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 5, , 6]);
                     // if-sats som i authenticationsHandler fast en dag framåt och inte sekunder.
                     console.log("trying...");
                     return [4 /*yield*/, axios_1["default"].get(url, { headers: headers })];
-                case 2:
+                case 3:
                     request = _a.sent();
                     return [4 /*yield*/, request.data];
-                case 3:
+                case 4:
                     response = _a.sent();
                     if (request.status === 200) {
                         allLocationData = response.LocationList.StopLocation;
                         data = JSON.stringify(allLocationData, null, 2);
-                        filesUpdated = fs.writeFile('./allLocation.json', data, function (err, fs) {
+                        //console.log()
+                        fs.writeFile('./allLocation.json', data, function (err, fs) {
                             if (err)
                                 throw err;
                             console.log('filesUpdated');
                         });
                         console.log("Location data length: ", allLocationData.length);
-                        res.json({ text: 'test' });
+                        // res.json({text: 'test'})
                     }
                     else {
                         console.log("Error saveLocationHandler...");
                         //console.error
                     }
-                    return [3 /*break*/, 5];
-                case 4:
+                    return [3 /*break*/, 6];
+                case 5:
                     error_1 = _a.sent();
                     console.log(error_1.status);
-                    return [3 /*break*/, 5];
-                case 5:
-                    next();
-                    return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     }); }
