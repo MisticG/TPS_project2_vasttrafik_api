@@ -1,5 +1,5 @@
 
-export default async function getTrafikInfo(req, res, axios){
+export default async function getTrafikInfo(req, res, axios, token){
     
     let data = req.body;
     console.log(data);
@@ -8,7 +8,7 @@ export default async function getTrafikInfo(req, res, axios){
         //We get current journy
         let response = await axios.get(url, {
             headers: {
-            Authorization: `Bearer ${res.locals.token}`,
+            Authorization: `Bearer ${token}`,
             }})
 
  

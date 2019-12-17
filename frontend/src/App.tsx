@@ -20,7 +20,8 @@ interface State {
     chooosenEnd:location,
     ankAvg:string,
     text:string,
-    trips:any
+    trips:any,
+    choosenVehicle:string[]
 
    
 }
@@ -37,7 +38,8 @@ export default class App extends Component<Props, State> {
             choosenStart:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
             chooosenEnd:{name:'', id:0, lat:0, lon:0, weight:0, track:''},
             text:'',
-            trips:[]
+            trips:[],
+            choosenVehicle:[]
             
         }
     }
@@ -57,19 +59,28 @@ export default class App extends Component<Props, State> {
 
     searchTrip = async ()=> {
         let isDepOrArrTime = this.state.ankAvg === 'arraivle'?1:0;
+        let choosenVehicleTypes = this.state.choosenVehicle;
         let data = 
-        {originId:this.state.choosenStart.id,
+        {
+        originId:this.state.choosenStart.id,
         destId:this.state.chooosenEnd.id,
         date:this.state.date,
         time:this.state.text,
-        isDepOrArrTime:isDepOrArrTime
+        isDepOrArrTime:isDepOrArrTime,
+        useTram:choosenVehicleTypes.indexOf('Spårvagn') !== -1?1:0,
+        useBoat:choosenVehicleTypes.indexOf('Båt') !== -1?1:0,
+        useBus:choosenVehicleTypes.indexOf('Buss') !== -1?1:0,
+        useElse:choosenVehicleTypes.indexOf('Överiga Tåg') !== -1?1:0,
+        useVas:choosenVehicleTypes.indexOf('Västtågen') !== -1?1:0
         }
         try {
             
             let response = await axios.post('/searchTrip', data);
 
             let actuallResponse = await response.data;
-            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse}):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
+            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse},
+                ()=>this.renderTrips()
+                ):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {
@@ -90,19 +101,25 @@ export default class App extends Component<Props, State> {
         
         this.setState({chooosenEnd:value})
     }
-    renderTrips = ()=> {
+    renderTrips =  ()=> {
         if(this.state.trips.length > 0){
-            console.log(this.state.trips, 'here is trips')
+           
             return <Trip trips={this.state.trips}/>
-        } else {
-            return ''
-        }
+        } 
 
     }
-    renderFiltering = ()=>{
-        let filters = ['Spårvagn', 'Buss', 'Båt', 'Överiga tåg'];
-        filters.map((filter)=>{
 
+    choosenVehicleType = (choosen:string)=>{
+        let choosenVehicles = this.state.choosenVehicle;
+
+        choosenVehicles.push(choosen);
+        this.setState({choosenVehicle:choosenVehicles}, ()=>{console.log(this.state.choosenVehicle,'here is choosen vehicles')})
+
+    }
+    renderFiltering = () => {
+        let filters = ['Spårvagn', 'Buss', 'Båt','Västtågen', 'Överiga Tåg'];
+        return filters.map((filter)=>{
+        return<li style={filterItemStyle}><button onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
         })
     }
   
@@ -111,7 +128,8 @@ export default class App extends Component<Props, State> {
         console.log('holla')
         return (
         <div style={formStyle}>
-
+            <h5>Här kan du filtera</h5>
+            <ul style={filterStyle}> {this.renderFiltering()} </ul>
             <span>It my take 5 seconds... before loading result</span>
             <Form> 
             <form onSubmit={this.handleSubmit} style={formStyle}>
@@ -120,18 +138,19 @@ export default class App extends Component<Props, State> {
 
                <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
                {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
-                <label>Tid: ex 14:00 <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
+                <label>Tid: HH:MM <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
                 <select value={this.state.ankAvg} onChange={this.handleSelect}>
                     <option defaultChecked value='departure'>Avgående</option>
                     <option value={'arraivle'}>Akommande</option>
                 </select>
                 <ul>
-                    
+              
                 </ul>
 
                 <input type="submit" value="Söka" />
             </form>
            </Form>
+
             {this.renderTrips()}
         </div> 
 )
@@ -142,4 +161,16 @@ const formStyle:CSSProperties = {
     display:"flex",
     flexDirection:"column",
     alignItems:'center'
+}
+
+const filterStyle:CSSProperties = {
+    display:"flex",
+    flexDirection:"row",
+ 
+    justifyItems:"space-between"
+}
+
+const filterItemStyle:CSSProperties = {
+    listStyleType:'none',
+    padding:"2em"
 }

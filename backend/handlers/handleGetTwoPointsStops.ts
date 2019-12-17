@@ -1,14 +1,24 @@
 
-export default async function getTwoPointStops(req, res, axios){
+export default async function getTwoPointStops(req, res, axios, token){
     
     let data = req.body;
     console.log(data);
-    let url = `https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=${data.originId}&destId=${data.destId}&time=${data.time}&searchForArrival=${data.isDepOrArrTime}&date=${data.date}&needJourneyDetail=1&format=json`;
+    let url:string = ''
+    if(data.useBoat === 0 
+    && data.useBus === 0 
+    && data.useElse === 0 
+    && data.useTram === 0
+     ) {
+        url = `https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=${data.originId}&destId=${data.destId}&time=${data.time}&searchForArrival=${data.isDepOrArrTime}&date=${data.date}&needJourneyDetail=1&format=json`;
+     } else {
+         url =  url = `https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=${data.originId}&destId=${data.destId}&time=${data.time}&searchForArrival=${data.isDepOrArrTime}&date=${data.date}&useBus=${data.useBus}&useBoat=${data.useBoat}&useVas=${data.useVas}&useTram=${data.useTram}&useRegTrain=${data.useElse}&useLDTrain=${data.useElse}&needJourneyDetail=1&format=json`;
+     }
+
     try {
         //We get current journy
         let response = await axios.get(url, {
             headers: {
-            Authorization: `Bearer ${res.locals.token}`,
+            Authorization: `Bearer ${token}`,
             }})
 
  
@@ -18,7 +28,8 @@ export default async function getTwoPointStops(req, res, axios){
         //console.log(response)
         let trips = awaitResponse.TripList.Trip;
         //console.log(response);
-        console.log(trips, 'here')
+        
+        console.log(trips, 'here i trip data')
         typeof awaitResponse.errorText === undefined || trips === undefined ? res.json([]):res.json(trips)
         
     } catch(error) {

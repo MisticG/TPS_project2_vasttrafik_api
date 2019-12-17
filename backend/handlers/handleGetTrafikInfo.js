@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-function getTrafikInfo(req, res, axios) {
+function getTrafikInfo(req, res, axios, token) {
     return __awaiter(this, void 0, void 0, function () {
         var data, url, response, awaitResponse, dat, specefikTrafikInfo, error_1;
         return __generator(this, function (_a) {
@@ -50,7 +50,7 @@ function getTrafikInfo(req, res, axios) {
                     _a.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, axios.get(url, {
                             headers: {
-                                Authorization: "Bearer " + res.locals.token
+                                Authorization: "Bearer " + token
                             }
                         })];
                 case 2:

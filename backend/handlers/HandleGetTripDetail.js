@@ -36,20 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-function getTripDetail(req, res, axios) {
+function getTripDetail(req, res, axios, token) {
     return __awaiter(this, void 0, void 0, function () {
         var data, response, awaitResponse, journeyDetail, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     data = req.body;
-                    console.log(data, 'here');
+                    console.log(data, 'here is trip details');
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, axios.get(data.ref, {
                             headers: {
-                                Authorization: "Bearer " + res.locals.token
+                                Authorization: "Bearer " + token
                             }
                         })];
                 case 2:

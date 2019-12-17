@@ -1,21 +1,23 @@
 import express  = require('express')
 import * as bodyParser from 'body-parser';
-import { handleAccesstoken  } from './handlers/HandleaccessToken';
+import handleToken from './handlers/HandleaccessToken';
 import axios from 'axios';
 import * as fileSytem from 'file-system'
 import getTwoPointStops from './handlers/handleGetTwoPointsStops';
 import  getAllStops from './handlers/handleGetAllStops';
 import getTripDetail from './handlers/HandleGetTripDetail';
-
-const app:express.Application = express();
+import getTrafikInfo from './handlers/handleGetTrafikInfo';
+export const app:express.Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
-app.use([handleAccesstoken.formHandler, handleAccesstoken.handleError])
+//app.use([handleAccesstoken.formHandler, handleAccesstoken.handleError])
 
-app.get('/', (req:express.Request, res:express.Response)=>{
-   
+app.get('/', async (req:express.Request, res:express.Response)=>{
+    //let token = await handleAccesstoken()
+    let token = await handleToken();
+    console.log(token)
     async function test (){
 
         try{
@@ -51,27 +53,36 @@ app.get('/', (req:express.Request, res:express.Response)=>{
         } catch(error){ 
             console.log(error, 'here')
         }
-    } 
+    }  
     //test ()
-    res.send('holla')
-
+    res.send('Hello from start page')
+ 
 })
 //Get all stops 
-app.get('/locations', (req:express.Request, res:express.Response)=>{
+app.get('/locations', async (req:express.Request, res:express.Response)=>{
+    
     getAllStops(fileSytem,res);
    
 })
 //Get orgin-dest points stops
-app.post('/searchTrip',(req:express.Request, res:express.Response)=>{
- 
-    getTwoPointStops(req, res, axios);
+app.post('/searchTrip',async (req:express.Request, res:express.Response)=>{
+    let token = await handleToken();
+    console.log(token)
+    getTwoPointStops(req, res, axios, token);
 })
 //Get stop stations of specefic trip
 
-app.post('/getTripDetail', (req:express.Request, res:express.Response)=>{
-    getTripDetail(req, res, axios)
+app.post('/getTripDetail', async (req:express.Request, res:express.Response) => {
+    let token = await handleToken();
+    getTripDetail(req, res, axios, token)
 })
 
+app.post('/getTrafikInfo', async (req:express.Request, res:express.Response)=>{
+    let token = await handleToken();
+
+    getTrafikInfo(req,res,axios, token)
+
+})
 
 
 

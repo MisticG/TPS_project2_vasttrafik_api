@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-function getTwoPointStops(req, res, axios) {
+function getTwoPointStops(req, res, axios, token) {
     return __awaiter(this, void 0, void 0, function () {
         var data, url, response, awaitResponse, trips, error_1;
         return __generator(this, function (_a) {
@@ -44,13 +44,22 @@ function getTwoPointStops(req, res, axios) {
                 case 0:
                     data = req.body;
                     console.log(data);
-                    url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&needJourneyDetail=1&format=json";
+                    url = '';
+                    if (data.useBoat === 0
+                        && data.useBus === 0
+                        && data.useElse === 0
+                        && data.useTram === 0) {
+                        url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&needJourneyDetail=1&format=json";
+                    }
+                    else {
+                        url = url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&useBus=" + data.useBus + "&useBoat=" + data.useBoat + "&useVas=" + data.useVas + "&useTram=" + data.useTram + "&useRegTrain=" + data.useElse + "&useLDTrain=" + data.useElse + "&needJourneyDetail=1&format=json";
+                    }
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, axios.get(url, {
                             headers: {
-                                Authorization: "Bearer " + res.locals.token
+                                Authorization: "Bearer " + token
                             }
                         })];
                 case 2:
@@ -61,7 +70,7 @@ function getTwoPointStops(req, res, axios) {
                     response.status === 200 ? awaitResponse : [];
                     trips = awaitResponse.TripList.Trip;
                     //console.log(response);
-                    console.log(trips, 'here');
+                    console.log(trips, 'here i trip data');
                     typeof awaitResponse.errorText === undefined || trips === undefined ? res.json([]) : res.json(trips);
                     return [3 /*break*/, 5];
                 case 4:

@@ -1,13 +1,13 @@
-export default async function getTripDetail(req, res, axios){
+export default async function getTripDetail(req, res, axios, token){
 
     let data = req.body;
-    console.log(data,'here' )
+    console.log(data,'here is trip details' )
    
     try {
         //We get current journy
         let response = await axios.get(data.ref, {
             headers: {
-            Authorization: `Bearer ${res.locals.token}`,
+            Authorization: `Bearer ${token}`,
             }})
 
 

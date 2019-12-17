@@ -44,11 +44,12 @@ var fileSytem = require("file-system");
 var handleGetTwoPointsStops_1 = require("./handlers/handleGetTwoPointsStops");
 var handleGetAllStops_1 = require("./handlers/handleGetAllStops");
 var HandleGetTripDetail_1 = require("./handlers/HandleGetTripDetail");
-var app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use([HandleaccessToken_1.handleAccesstoken.formHandler, HandleaccessToken_1.handleAccesstoken.handleError]);
-app.get('/', function (req, res) {
+var handleGetTrafikInfo_1 = require("./handlers/handleGetTrafikInfo");
+exports.app = express();
+exports.app.use(bodyParser.json());
+exports.app.use(bodyParser.urlencoded({ extended: true }));
+//app.use([handleAccesstoken.formHandler, handleAccesstoken.handleError])
+exports.app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     function test() {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -88,20 +89,64 @@ app.get('/', function (req, res) {
             });
         });
     }
-    //test ()
-    res.send('holla');
-});
+    var token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, HandleaccessToken_1["default"]()];
+            case 1:
+                token = _a.sent();
+                console.log(token);
+                //test ()
+                res.send('Hello from start page');
+                return [2 /*return*/];
+        }
+    });
+}); });
 //Get all stops 
-app.get('/locations', function (req, res) {
-    handleGetAllStops_1["default"](fileSytem, res);
-});
+exports.app.get('/locations', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        handleGetAllStops_1["default"](fileSytem, res);
+        return [2 /*return*/];
+    });
+}); });
 //Get orgin-dest points stops
-app.post('/searchTrip', function (req, res) {
-    handleGetTwoPointsStops_1["default"](req, res, axios_1["default"]);
-});
+exports.app.post('/searchTrip', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, HandleaccessToken_1["default"]()];
+            case 1:
+                token = _a.sent();
+                console.log(token);
+                handleGetTwoPointsStops_1["default"](req, res, axios_1["default"], token);
+                return [2 /*return*/];
+        }
+    });
+}); });
 //Get stop stations of specefic trip
-app.post('/getTripDetail', function (req, res) {
-    HandleGetTripDetail_1["default"](req, res, axios_1["default"]);
-});
+exports.app.post('/getTripDetail', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, HandleaccessToken_1["default"]()];
+            case 1:
+                token = _a.sent();
+                HandleGetTripDetail_1["default"](req, res, axios_1["default"], token);
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.app.post('/getTrafikInfo', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, HandleaccessToken_1["default"]()];
+            case 1:
+                token = _a.sent();
+                handleGetTrafikInfo_1["default"](req, res, axios_1["default"], token);
+                return [2 /*return*/];
+        }
+    });
+}); });
 var port = 5000;
-app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
+exports.app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
