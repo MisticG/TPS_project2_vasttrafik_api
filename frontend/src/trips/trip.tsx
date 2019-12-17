@@ -73,8 +73,11 @@ export default class Trip extends Component<Props, State> {
         }
 
     }
-    
+    componentWillReceiveProps(){
+        this.renderTrips()
+    }
     renderStopStations = ()=>{ 
+        //Since we one empty station item at begining 
         if(this.state.stopStations.length > 0 ) {
             console.log('vi sätter state here')
             return <TripDetail stopStations={this.state.stopStations} originIdx={this.state.originIdx} destIdx={this.state.destIdx} flagg={this.state.flagg} trips={this.props.trips}/>
@@ -116,47 +119,49 @@ export default class Trip extends Component<Props, State> {
 
    
     renderTrips = ()=> {
-     
-        return this.props.trips.map((trip:any, index:number)=>{
-         
-            if(trip.Leg.length > 0 ){
-              
-                let test = trip.Leg.map((leg:any, i:number)=>{
-                    
-                
-                    if(leg.type !== "WALK") {
-    
-                    return <ul> 
-    
-                                <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
-                                <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
-
-                                <button onClick={()=> this.getTrafikInfo(leg.Origin.id, leg.Origin.date, leg.Origin.time, leg.journeyNumber)}>Har den föresning?</button>
-                               
-                                <button onClick={()=> this.sendRef(
-                                   leg.JourneyDetailRef.ref, leg.Origin.routeIdx,leg.Destination.routeIdx, index,i
-
-
-                                     
-                                     )}>Visa Alla Hållplatser</button>
-                                
-                                { this.state.tripI === index && this.state.legI === i ? this.renderStopStations():''}
-                              
-                                
-                            </ul>
-                    } else {
-                        return <ul> 
-    
-                                <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
-                                <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
-                            </ul>
-                    }
+        if(this.props.trips.length > 0 ) {
+            return this.props.trips.map((trip:any, index:number)=>{
+             
+                if(trip.Leg.length > 0 ){
+                  
+                    let test = trip.Leg.map((leg:any, i:number)=>{
                         
+                    
+                        if(leg.type !== "WALK") {
+        
+                        return <ul> 
+        
+                                    <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
+                                    <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
     
-                })
-                return <div style={tripContainer}> Here is one trip: {test}</div>
-            }
-        })
+                                    <button onClick={()=> this.getTrafikInfo(leg.Origin.id, leg.Origin.date, leg.Origin.time, leg.journeyNumber)}>Har den föresning?</button>
+                                   
+                                    <button onClick={()=> this.sendRef(
+                                       leg.JourneyDetailRef.ref, leg.Origin.routeIdx,leg.Destination.routeIdx, index,i
+    
+    
+                                         
+                                         )}>Visa Alla Hållplatser</button>
+                                    
+                                    { this.state.tripI === index && this.state.legI === i ? this.renderStopStations():''}
+                                  
+                                    
+                                </ul>
+                        } else {
+                            return <ul> 
+        
+                                    <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
+                                    <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
+                                </ul>
+                        }
+                            
+        
+                    })
+                    return <div style={tripContainer}> Here is one trip: {test}</div>
+                }
+            })
+
+        }
 
     }
     

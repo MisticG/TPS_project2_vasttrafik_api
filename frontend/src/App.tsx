@@ -68,24 +68,27 @@ export default class App extends Component<Props, State> {
         time:this.state.text,
         isDepOrArrTime:isDepOrArrTime,
         useTram:choosenVehicleTypes.indexOf('Spårvagn') !== -1?1:0,
-        useBoat:choosenVehicleTypes.indexOf('Båt') !== -1?1:0,
-        useBus:choosenVehicleTypes.indexOf('Buss') !== -1?1:0,
-        useElse:choosenVehicleTypes.indexOf('Överiga Tåg') !== -1?1:0,
-        useVas:choosenVehicleTypes.indexOf('Västtågen') !== -1?1:0
+        useBoat:choosenVehicleTypes.indexOf('Båt') !== -1 ? 1:0,
+        useBus:choosenVehicleTypes.indexOf('Buss') !== -1 ? 1:0,
+        useElse:choosenVehicleTypes.indexOf('Överiga Tåg') !== -1 ? 1:0,
+        useVas:choosenVehicleTypes.indexOf('Västtågen') !== -1 ? 1:0
         }
         try {
             
             let response = await axios.post('/searchTrip', data);
 
             let actuallResponse = await response.data;
-            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse},
-                ()=>this.renderTrips()
-                ):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
+            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse, choosenVehicle:[]}):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {
+            alert('Couldnt deliver request searchTrip')
+            /* 
+            om man gör flera vehicke type visa den som hittas och aler för den som inte finns
             
-            console.log('Could not search current trip')
+            */
+            
+            console.log('Could not search current trip', error)
         }
     }
 
@@ -101,19 +104,13 @@ export default class App extends Component<Props, State> {
         
         this.setState({chooosenEnd:value})
     }
-    renderTrips =  ()=> {
-        if(this.state.trips.length > 0){
-           
-            return <Trip trips={this.state.trips}/>
-        } 
-
-    }
+   
 
     choosenVehicleType = (choosen:string)=>{
         let choosenVehicles = this.state.choosenVehicle;
 
         choosenVehicles.push(choosen);
-        this.setState({choosenVehicle:choosenVehicles}, ()=>{console.log(this.state.choosenVehicle,'here is choosen vehicles')})
+        this.setState({choosenVehicle:choosenVehicles}, ()=>{alert(`Du valde ${choosen}`)})
 
     }
     renderFiltering = () => {
@@ -151,7 +148,7 @@ export default class App extends Component<Props, State> {
             </form>
            </Form>
 
-            {this.renderTrips()}
+           <Trip trips={this.state.trips}/>
         </div> 
 )
     }

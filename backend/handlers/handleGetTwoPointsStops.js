@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 function getTwoPointStops(req, res, axios, token) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, url, response, awaitResponse, trips, error_1;
+        var data, url, response, awaitResponse, dat, trips, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -49,10 +49,10 @@ function getTwoPointStops(req, res, axios, token) {
                         && data.useBus === 0
                         && data.useElse === 0
                         && data.useTram === 0) {
-                        url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&needJourneyDetail=1&format=json";
+                        url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&numTrips=4&needJourneyDetail=1&format=json";
                     }
                     else {
-                        url = url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&useBus=" + data.useBus + "&useBoat=" + data.useBoat + "&useVas=" + data.useVas + "&useTram=" + data.useTram + "&useRegTrain=" + data.useElse + "&useLDTrain=" + data.useElse + "&needJourneyDetail=1&format=json";
+                        url = url = "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" + data.originId + "&destId=" + data.destId + "&time=" + data.time + "&searchForArrival=" + data.isDepOrArrTime + "&date=" + data.date + "&useBus=" + data.useBus + "&useBoat=" + data.useBoat + "&useVas=" + data.useVas + "&useTram=" + data.useTram + "&useRegTrain=" + data.useElse + "&useLDTrain=" + data.useElse + "&numTrips=4&needJourneyDetail=1&format=json";
                     }
                     _a.label = 1;
                 case 1:
@@ -67,10 +67,9 @@ function getTwoPointStops(req, res, axios, token) {
                     return [4 /*yield*/, response.data];
                 case 3:
                     awaitResponse = _a.sent();
-                    response.status === 200 ? awaitResponse : [];
-                    trips = awaitResponse.TripList.Trip;
-                    //console.log(response);
-                    console.log(trips, 'here i trip data');
+                    dat = response.status === 200 ? awaitResponse : [];
+                    trips = dat.TripList.Trip;
+                    console.log(trips.length, 'here i trip data');
                     typeof awaitResponse.errorText === undefined || trips === undefined ? res.json([]) : res.json(trips);
                     return [3 /*break*/, 5];
                 case 4:
@@ -84,65 +83,3 @@ function getTwoPointStops(req, res, axios, token) {
     });
 }
 exports["default"] = getTwoPointStops;
-function axiosRequest(axios, url, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, awaitResponse;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, axios.get(url, {
-                        headers: {
-                            Authorization: "Bearer " + res.locals.token
-                        }
-                    })];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.data];
-                case 2:
-                    awaitResponse = _a.sent();
-                    return [4 /*yield*/, awaitResponse];
-                case 3: return [2 /*return*/, _a.sent()];
-            }
-        });
-    });
-}
-function getTripsWithDetails(trips, axios, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var test, f, tr;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    test = [];
-                    return [4 /*yield*/, trips.filter(function (trip) {
-                            return trip.Leg.filter(function (leg) {
-                                if (leg.JourneyDetailRef && leg.JourneyDetailRef !== undefined) {
-                                    axiosRequest(axios, leg.JourneyDetailRef.ref, res).then(function (details) {
-                                        leg.details = details.JourneyDetail;
-                                        test.push(leg);
-                                    }).then(function () {
-                                        console.log(test);
-                                    });
-                                }
-                            });
-                        })];
-                case 1:
-                    f = _a.sent();
-                    return [4 /*yield*/, test];
-                case 2:
-                    tr = _a.sent();
-                    console.log(tr);
-                    return [2 /*return*/, tr];
-            }
-        });
-    });
-}
-/*
-//1departureBoard uses id from all locations and return the next 20 stops by giving time
-This method will return the next 20 departures (or less if not existing) from a given point
-    in time or the next departures in a given timespan. The service can only be called for stops/stations
-    by using according ID retrieved by the location method. The parameter is called id. The time and date
-    are defined with the parameters date and time.
-
-
-//2journyDetail arrival times can not be called directly
-//3 /trip from which time a bus will leave
-*/ 
