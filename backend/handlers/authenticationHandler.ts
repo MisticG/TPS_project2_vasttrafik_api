@@ -1,83 +1,33 @@
-import { keys } from "./keys";
+import {keys} from './keys';
+
 import axios from 'axios';
-import * as express from 'express';
-//import * as moment from 'moment';
 
-const querystring = require('querystring');
-let token: string = '';
-let tokenTime: number = 0; 
+import * as moment from 'moment';
 
-export const myCache = {
-    
-}
+let time: any;
 
-/*export function fetchData() { //saveLocationHandler
-    // Hämta all data som du vill cacha
-    myCache.stentorp = 'Foobar'
-}*/
-//console.log(token, 'wut')
-export const handleAuthenticate = {
+export default async function handleToken () {
 
-authenticate : async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.locals.token
-   /* let now = new Date();
-    let expires_in = moment().add(tokenTime, 'seconds');
-    let diff = expires_in.isAfter(now);
-*/
-//yes
+    let nowDate = new Date();
+    let now = moment(nowDate, 'YYYY-MM-DD[T]HH:mm:ss[Z]');
 
-//expires_in är 0?
-    if(token === ''  && tokenTime === 0) {
-    let url = keys.oauthUrl
-    let body = querystring.stringify({
-        'grant_type':'client_credentials', 
-        'client_id': keys.key, 
-        'client_secret': keys.secret
-    })
+    time === undefined || time === null ? now:time;    
 
-    //definiera typningen för 'config'
-    let config: any = {
-        'Content-type': 'application/x-www-form-urlencoded',
-    }
-        await axios.post(url, 
-            body,
-            config
-          )
-          .then(async (response) => {
-            let data = await response.data;
-            token = data.access_token
-            tokenTime = data.expires_in
-            console.log(data, 'jag är data');
+    let url = "https://api.vasttrafik.se/token";
 
-            return token
-          }, (error) => {
-            console.log(error);
-          }); 
-    } else { 
-        console.log(token, 'jag är en token som redan finns')
-    }
-    res.locals.token = token
-    next()
-}
-    
-    /*try {
-        let request = await axios.post(url, body, config)
-        let response = request
+    let response = await axios.request({ method:'post',url: url,headers: {'Content-Type': 'application/x-www-form-urlencoded'},data:`grant_type=client_credentials&client_id=${keys.key}&client_secret=${keys.secret}`});
 
-        if (response.status >= 400 ) {
-            return response.status + 'Error: ' + response.statusText
-           
-            
-            //return await token
-    
-            //console.log(response.data)
-        } else {
-            console.log(response.data.access_token)
-            return await response.data.access_token;
-        }
+    let token = response.data.access_token;
 
-    } catch(error) {
-        console.log(error)
-    }*/
+    let expires_in = response.data.expires_in;
+
+    time = now.add(expires_in, 'seconds');
+
+    console.log(expires_in,'here is time');
+
+    console.log(token)
+
+    return token;
+
 }
 

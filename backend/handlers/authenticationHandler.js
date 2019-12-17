@@ -39,76 +39,28 @@ exports.__esModule = true;
 var keys_1 = require("./keys");
 var axios_1 = require("axios");
 var moment = require("moment");
-var querystring = require('querystring');
-var token = '';
-var tokenTime = 0;
-//console.log(token, 'wut')
-exports.handleAuthenticate = {
-    authenticate: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var now, expires_in, diff, url, body, config;
+var time;
+function handleToken() {
+    return __awaiter(this, void 0, void 0, function () {
+        var nowDate, now, url, response, token, expires_in;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    now = new Date();
-                    expires_in = moment().add(tokenTime, 'seconds');
-                    diff = expires_in.isAfter(now);
-                    if (!(token === '' && diff === false)) return [3 /*break*/, 2];
-                    url = keys_1.keys.oauthUrl;
-                    body = querystring.stringify({
-                        'grant_type': 'client_credentials',
-                        'client_id': keys_1.keys.key,
-                        'client_secret': keys_1.keys.secret
-                    });
-                    config = {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    };
-                    return [4 /*yield*/, axios_1["default"].post(url, body, config)
-                            .then(function (response) { return __awaiter(void 0, void 0, void 0, function () {
-                            var data;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, response.data];
-                                    case 1:
-                                        data = _a.sent();
-                                        token = data.access_token;
-                                        tokenTime = data.expires_in;
-                                        console.log(data, 'jag är data');
-                                        return [2 /*return*/, token];
-                                }
-                            });
-                        }); }, function (error) {
-                            console.log(error);
-                        })];
+                    nowDate = new Date();
+                    now = moment(nowDate, 'YYYY-MM-DD[T]HH:mm:ss[Z]');
+                    time === undefined || time === null ? now : time;
+                    url = "https://api.vasttrafik.se/token";
+                    return [4 /*yield*/, axios_1["default"].request({ method: 'post', url: url, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, data: "grant_type=client_credentials&client_id=" + keys_1.keys.key + "&client_secret=" + keys_1.keys.secret })];
                 case 1:
-                    _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    console.log(token, 'jag är en token som redan finns');
-                    _a.label = 3;
-                case 3:
-                    res.locals.token = token;
-                    next();
-                    return [2 /*return*/];
+                    response = _a.sent();
+                    token = response.data.access_token;
+                    expires_in = response.data.expires_in;
+                    time = now.add(expires_in, 'seconds');
+                    console.log(expires_in, 'here is time');
+                    console.log(token);
+                    return [2 /*return*/, token];
             }
         });
-    }); }
-    /*try {
-        let request = await axios.post(url, body, config)
-        let response = request
-
-        if (response.status >= 400 ) {
-            return response.status + 'Error: ' + response.statusText
-           
-            
-            //return await token
-    
-            //console.log(response.data)
-        } else {
-            console.log(response.data.access_token)
-            return await response.data.access_token;
-        }
-
-    } catch(error) {
-        console.log(error)
-    }*/
-};
+    });
+}
+exports["default"] = handleToken;
