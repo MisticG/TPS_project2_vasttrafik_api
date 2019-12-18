@@ -36,9 +36,6 @@ const renderSuggestion = (suggestion:any) => (
     </ul>
   );
 
-
-
-
 export default class Autosuggest2 extends React.Component<Props,State> {
   constructor(props:Props) {
     super(props)
@@ -73,7 +70,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
 
 
    
-        return options
+      return options
     }
 
     onChange = (event:React.ChangeEvent<HTMLInputElement>, { newValue }:any) => {
@@ -121,7 +118,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
           {this.rendIsLoading()}
                           
       <Autosuggest
-        suggestions={suggestions}
+        suggestions={suggestions.slice(0, 7)}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
@@ -129,7 +126,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
         inputProps={inputProps}
       />
 
-        </div> 
-            )}
+    </div> 
+  )}
 
 }
