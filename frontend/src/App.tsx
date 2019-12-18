@@ -78,7 +78,7 @@ export default class App extends Component<Props, State> {
             let response = await axios.post('/searchTrip', data);
 
             let actuallResponse = await response.data;
-            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse, choosenVehicle:[]}):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
+            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse, choosenVehicle:[]},()=>alert('It takes time to update!')):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {
@@ -119,6 +119,16 @@ export default class App extends Component<Props, State> {
         return<li style={filterItemStyle}><button onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
         })
     }
+
+
+    /* 
+    componentWillReceiveProps(){
+        this.renderTrips()
+    }
+    
+    
+    
+    */
   
 
     render() {
