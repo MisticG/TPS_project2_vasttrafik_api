@@ -17,8 +17,8 @@ export const app:express.Application = express();
 saveAllLocation()
 
 //Set a timer to get locations to a json-file every 24h
-//setInterval(saveAllLocation, 1000 * 60 * 60 * 24)
-setInterval(saveAllLocation, 1000 * 30)
+setInterval(saveAllLocation, 1000 * 60 * 60 * 24)
+//setInterval(saveAllLocation, 1000 * 30)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))

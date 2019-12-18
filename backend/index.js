@@ -51,8 +51,8 @@ exports.app = express();
 //Get a token and save Locations in json file 
 saveLocationHandler_1["default"]();
 //Set a timer to get locations to a json-file every 24h
-//setInterval(saveAllLocation, 1000 * 60 * 60 * 24)
-setInterval(saveLocationHandler_1["default"], 1000 * 30);
+setInterval(saveLocationHandler_1["default"], 1000 * 60 * 60 * 24);
+//setInterval(saveAllLocation, 1000 * 30)
 exports.app.use(bodyParser.json());
 exports.app.use(bodyParser.urlencoded({ extended: true }));
 //app.use('/searchJourney')
