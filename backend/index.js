@@ -10,7 +10,7 @@ var app = express();
 authenticationHandler_1["default"]();
 saveLocationHandler_1["default"]();
 //Set a timer to get locations to a json-file every 24h
-//setInterval(locationHandler.saveAllLocation, 1000 * 60 * 60 * 24)
+//setInterval(saveAllLocation, 1000 * 60 * 60 * 24)
 setInterval(saveLocationHandler_1["default"], 1000 * 30);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
