@@ -4,8 +4,6 @@ interface Props {
 }
 export default function Form(props:Props){
 
-
-  
     return (
       <div>
           {props.children}

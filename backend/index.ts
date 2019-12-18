@@ -7,7 +7,7 @@ import handleToken from './handlers/authenticationHandler'
 import axios from 'axios';
 import * as fileSytem from 'file-system'
 import getTwoPointStops from './handlers/handleGetTwoPointsStops';
-import  getAllStops from './handlers/handleGetAllStops';
+import getAllStops from './handlers/handleGetAllStops';
 import getTripDetail from './handlers/HandleGetTripDetail';
 import getTrafikInfo from './handlers/handleGetTrafikInfo';
 export const app:express.Application = express();

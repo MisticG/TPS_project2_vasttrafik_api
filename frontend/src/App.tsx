@@ -3,6 +3,7 @@ import Autosuggest2 from './autoSuggestions/autoSuggestion2'
 import Form from './forms/Form';
 import axios from 'axios';
 import Trip from './trips/trip';
+
 interface location {
     name: string;
     id: number;
@@ -22,11 +23,10 @@ interface State {
     text:string,
     trips:any,
     choosenVehicle:string[]
-
-   
 }
 
 interface Props {}
+
 export default class App extends Component<Props, State> {
     constructor(props:Props){
         super(props);
@@ -40,7 +40,6 @@ export default class App extends Component<Props, State> {
             text:'',
             trips:[],
             choosenVehicle:[]
-            
         }
     }
    
@@ -52,27 +51,27 @@ export default class App extends Component<Props, State> {
 
             this.searchTrip()
         } else {
-            alert('Fyll alla inputs eller du har fyllt fel uppgifter.')
+            alert('Du behöver fylla i fler uppgifter.')
         }
-      
     }
 
     searchTrip = async ()=> {
         let isDepOrArrTime = this.state.ankAvg === 'arraivle'?1:0;
         let choosenVehicleTypes = this.state.choosenVehicle;
-        let data = 
-        {
-        originId:this.state.choosenStart.id,
-        destId:this.state.chooosenEnd.id,
-        date:this.state.date,
-        time:this.state.text,
-        isDepOrArrTime:isDepOrArrTime,
-        useTram:choosenVehicleTypes.indexOf('Spårvagn') !== -1?1:0,
-        useBoat:choosenVehicleTypes.indexOf('Båt') !== -1 ? 1:0,
-        useBus:choosenVehicleTypes.indexOf('Buss') !== -1 ? 1:0,
-        useElse:choosenVehicleTypes.indexOf('Överiga Tåg') !== -1 ? 1:0,
-        useVas:choosenVehicleTypes.indexOf('Västtågen') !== -1 ? 1:0
+        let data = {
+            originId:this.state.choosenStart.id,
+            destId:this.state.chooosenEnd.id,
+            date:this.state.date,
+            time:this.state.text,
+            isDepOrArrTime:isDepOrArrTime,
+
+            useTram:choosenVehicleTypes.indexOf('Spårvagn') !== -1?1:0,
+            useBoat:choosenVehicleTypes.indexOf('Båt') !== -1 ? 1:0,
+            useBus:choosenVehicleTypes.indexOf('Buss') !== -1 ? 1:0,
+            useElse:choosenVehicleTypes.indexOf('Övriga tåg') !== -1 ? 1:0,
+            useVas:choosenVehicleTypes.indexOf('Västtåg') !== -1 ? 1:0
         }
+
         try {
             
             let response = await axios.post('/searchTrip', data);
@@ -82,6 +81,7 @@ export default class App extends Component<Props, State> {
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {
+
             alert('Couldnt deliver request searchTrip')
             /* 
             om man gör flera vehicke type visa den som hittas och aler för den som inte finns
@@ -92,7 +92,7 @@ export default class App extends Component<Props, State> {
         }
     }
 
-    handleOnchange= ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({[event.target.type]:event.target.value} as Pick<State, any>) }
+    handleOnchange = ( event: React.ChangeEvent<HTMLInputElement>) => { this.setState({[event.target.type]:event.target.value} as Pick<State, any>) }
  
     handleSelect = (event: any) => { this.setState({ankAvg:event.target.value}) }
 
@@ -105,7 +105,6 @@ export default class App extends Component<Props, State> {
         this.setState({chooosenEnd:value})
     }
    
-
     choosenVehicleType = (choosen:string)=>{
         let choosenVehicles = this.state.choosenVehicle;
 
@@ -113,10 +112,11 @@ export default class App extends Component<Props, State> {
         this.setState({choosenVehicle:choosenVehicles}, ()=>{alert(`Du valde ${choosen}`)})
 
     }
+
     renderFiltering = () => {
-        let filters = ['Spårvagn', 'Buss', 'Båt','Västtågen', 'Överiga Tåg'];
+        let filters = ['Spårvagn', 'Buss', 'Båt','Västtåg', 'Övriga tåg'];
         return filters.map((filter)=>{
-        return<li style={filterItemStyle}><button onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
+            return<li style={filterItemStyle}><button onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
         })
     }
 
@@ -134,33 +134,34 @@ export default class App extends Component<Props, State> {
     render() {
         console.log('holla')
         return (
-        <div style={formStyle}>
-            <h5>Här kan du filtera</h5>
-            <ul style={filterStyle}> {this.renderFiltering()} </ul>
-            <span>It my take 5 seconds... before loading result</span>
-            <Form> 
-            <form onSubmit={this.handleSubmit} style={formStyle}>
-                <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
-                <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
+            <div style={formStyle}>
+                <h5>Välj transportmedel: </h5>
+                {/*flytta inte ul this.renderfiltreting*/}
+                <ul style={filterStyle}> {this.renderFiltering()} </ul>
+                
+                {/*<span>It my take 5 seconds... before loading result</span>*/}
+                <Form> 
+                <form onSubmit={this.handleSubmit} style={formStyle}>
+                    <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
+                    <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
 
-               <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
-               {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
-                <label>Tid: HH:MM <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
-                <select value={this.state.ankAvg} onChange={this.handleSelect}>
-                    <option defaultChecked value='departure'>Avgående</option>
-                    <option value={'arraivle'}>Akommande</option>
-                </select>
-                <ul>
-              
-                </ul>
+                    <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
+                    {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
+                    <label>Tid: HH:MM <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
+                    <select value={this.state.ankAvg} onChange={this.handleSelect}>
+                        <option defaultChecked value='departure'>Avgående</option>
+                        <option value={'arraivle'}>Ankommande</option>
+                    </select>
+                    <ul>
+                
+                    </ul>
+                    <input type="submit" value="Sök resa" />
+                </form>
+            </Form>
 
-                <input type="submit" value="Söka" />
-            </form>
-           </Form>
-
-           <Trip trips={this.state.trips}/>
-        </div> 
-)
+            <Trip trips={this.state.trips}/>
+            </div> 
+        )
     }
 }
 
