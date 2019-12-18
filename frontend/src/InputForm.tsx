@@ -12,7 +12,7 @@ import React, { Component } from 'react';
 
   };
 
-  findTrip = (e:any) =>{
+/*   findTrip = (e:any) =>{
     e.preventDefault();
 
     const payload = {
@@ -23,40 +23,26 @@ import React, { Component } from 'react';
     fetch('SOME URL', {
       body: JSON.stringify(payload)
     })
+
   /*   axios
     .get(`http:apikey.InputF`)
     .then(res=>{
       //console.log(res.data);
       this.setState({trip_list: res.data.message.body.trip_list});
     })
-    .catch(err => console.log(err)); */
-  }
+    .catch(err => console.log(err)); 
+  } */
 
   onChange = (e:any) =>{
     this.setState({[e.target.name]: e.target.value});
   }
-
-/*     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event:any) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event:any) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  } */
-
-
 
   render() {
 
     return (
       <div className="card card-body mb-4 p-4">
         <h1 className= "display-4 text-center">Välkommen Till Västtrafik</h1>
-        <form onSubmit={this.findTrip}>
+        <form /* onSubmit={this.findTrip} */>
           <div className="form-group">
             <input
             type="text"
