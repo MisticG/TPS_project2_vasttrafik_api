@@ -3,6 +3,7 @@ import Autosuggest2 from './autoSuggestions/autoSuggestion2'
 import Form from './forms/Form';
 import axios from 'axios';
 import Trip from './trips/trip';
+import snowFall from './snowFall';
 
 interface location {
     name: string;
@@ -116,66 +117,68 @@ export default class App extends Component<Props, State> {
     renderFiltering = () => {
         let filters = ['Spårvagn', 'Buss', 'Båt','Västtåg', 'Övriga tåg'];
         return filters.map((filter)=>{
-            return<li style={filterItemStyle}><button onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
+            return<li style={filterItemStyle}><button className="btn btn-info" onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
         })
     }
-
-
-    /* 
-    componentWillReceiveProps(){
-        this.renderTrips()
-    }
-    
-    
-    
-    */
-  
 
     render() {
         console.log('holla')
         return (
-            <div style={formStyle}>
-                <h5>Välj transportmedel: </h5>
-                {/*flytta inte ul this.renderfiltreting*/}
-                <ul style={filterStyle}> {this.renderFiltering()} </ul>
-                
-                {/*<span>It my take 5 seconds... before loading result</span>*/}
-                <Form> 
-                <form onSubmit={this.handleSubmit} style={formStyle}>
-                    <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
-                    <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
+            <div className="container-fluid">
+                {snowFall()}
+                <div style={style}>
+                    <h5 style={{marginLeft: "1.5em"}}>Välj transportmedel (valfritt): </h5>
+                    {/*flytta inte ul this.renderfiltreting*/}
+                    <ul style={filterStyle}> {this.renderFiltering()} </ul>
+                    <div className="container">
+                        <Form>
+                            <form onSubmit={this.handleSubmit}>
+                                <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
+                                <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
 
-                    <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
-                    {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
-                    <label>Tid: HH:MM <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
-                    <select value={this.state.ankAvg} onChange={this.handleSelect}>
-                        <option defaultChecked value='departure'>Avgående</option>
-                        <option value={'arraivle'}>Ankommande</option>
-                    </select>
-                    <ul>
-                
-                    </ul>
-                    <input type="submit" value="Sök resa" />
-                </form>
-            </Form>
-
-            <Trip trips={this.state.trips}/>
-            </div> 
+                                <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
+                                {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
+                                <label>Tid: HH:MM <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
+                                <select value={this.state.ankAvg} onChange={this.handleSelect}>
+                                    <option defaultChecked value='departure'>Avgående</option>
+                                    <option value={'arraivle'}>Ankommande</option>
+                                </select>
+                                <ul>
+                            
+                                </ul>
+                                <input type="submit" value="Sök resa" />
+                            </form>
+                        </Form>
+                    
+                    </div>
+                <Trip trips={this.state.trips}/>
+                </div> 
+            </div>
         )
     }
 }
 
-const formStyle:CSSProperties = {
+
+
+const style:CSSProperties = {
     display:"flex",
     flexDirection:"column",
-    alignItems:'center'
+    alignItems:'left',
+    marginTop: '4em'
 }
+
+const formStyle:CSSProperties = {
+    display: 'flex',
+    marginTop: '1em',
+    alignItems:'center',
+}
+
 
 const filterStyle:CSSProperties = {
     display:"flex",
     flexDirection:"row",
  
-    justifyItems:"space-between"
+    //justifyItems:"space-between"
 }
 
 const filterItemStyle:CSSProperties = {

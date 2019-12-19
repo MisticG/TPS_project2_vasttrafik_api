@@ -55,8 +55,6 @@ setInterval(saveLocationHandler_1["default"], 1000 * 60 * 60 * 24);
 //setInterval(saveAllLocation, 1000 * 30)
 exports.app.use(bodyParser.json());
 exports.app.use(bodyParser.urlencoded({ extended: true }));
-//app.use('/searchJourney')
-//app.use([handleAccesstoken.formHandler, handleAccesstoken.handleError])
 exports.app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         res.send('Hello from start page');
@@ -84,7 +82,7 @@ exports.app.post('/searchTrip', function (req, res) { return __awaiter(void 0, v
         }
     });
 }); });
-//Get stop stations of specefic trip
+//Get stop stations of specific trip
 exports.app.post('/getTripDetail', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var token;
     return __generator(this, function (_a) {

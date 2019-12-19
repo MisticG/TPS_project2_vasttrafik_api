@@ -23,28 +23,27 @@ setInterval(saveAllLocation, 1000 * 60 * 60 * 24)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
-//app.use('/searchJourney')
-//app.use([handleAccesstoken.formHandler, handleAccesstoken.handleError])
-
 app.get('/', async (req:express.Request, res:express.Response)=>{
 
     res.send('Hello from start page')
  
 })
+
 //Get all stops 
 app.get('/locations', async (req:express.Request, res:express.Response)=>{
     
     getAllStops(fileSytem,res);
    
 })
+
 //Get orgin-dest points stops
 app.post('/searchTrip',async (req:express.Request, res:express.Response)=>{
     let token = await handleToken();
     console.log(token)
     getTwoPointStops(req, res, axios, token);
 })
-//Get stop stations of specefic trip
 
+//Get stop stations of specific trip
 app.post('/getTripDetail', async (req:express.Request, res:express.Response) => {
     let token = await handleToken();
     getTripDetail(req, res, axios, token)
