@@ -127,26 +127,26 @@ export default class App extends Component<Props, State> {
             <div className="container-fluid">
                 {snowFall()}
                 <div style={style}>
-                    <h5 style={{marginLeft: "1.5em"}}>Välj transportmedel (valfritt): </h5>
+                    <h5>Välj transportmedel (valfritt): </h5><br></br>
                     {/*flytta inte ul this.renderfiltreting*/}
                     <ul style={filterStyle}> {this.renderFiltering()} </ul>
-                    <div className="container">
+                    <div>
                         <Form>
-                            <form onSubmit={this.handleSubmit}>
-                                <Autosuggest2 placeholder={'Från'} value={this.state.start} onChange={this.getStartValue} type={'start'}/><br />
-                                <Autosuggest2 placeholder={'Till'} value={this.state.end} onChange={this.getEndValue} type={'end'}/><br/>
+                            <form style={{padding: "1em"}} onSubmit={this.handleSubmit}>
+                                <label>Från: <Autosuggest2 placeholder={''}value={this.state.start} onChange={this.getStartValue} type={'start'}/></label><br></br>
+                                <label>Till: <Autosuggest2 placeholder={''} value={this.state.end} onChange={this.getEndValue} type={'end'}/></label><br></br>
 
-                                <label>Datum: <input type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br/>
+                                <label>Datum: <br></br><input className="form-control" type="date" value={this.state.date} onChange={this.handleOnchange} required/></label> <br></br><br/>
                                 {/* Since type date only has 0-12andpm/am option and we need time like 13:00 exc.So we use text type instead */}
-                                <label>Tid: HH:MM <input type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
-                                <select value={this.state.ankAvg} onChange={this.handleSelect}>
+                                <label>Tid: HH:MM <br></br><input className="form-control" type="text" value={this.state.text} onChange={this.handleOnchange} required maxLength={5}/></label>
+                                <select style={{width: "10em", marginLeft: "2em"}} className="custom-select" value={this.state.ankAvg} onChange={this.handleSelect}>
                                     <option defaultChecked value='departure'>Avgående</option>
                                     <option value={'arraivle'}>Ankommande</option>
                                 </select>
                                 <ul>
                             
                                 </ul>
-                                <input type="submit" value="Sök resa" />
+                                <button className="btn btn-success" value="Sök resa">Sök resa</button>
                             </form>
                         </Form>
                     
@@ -158,30 +158,20 @@ export default class App extends Component<Props, State> {
     }
 }
 
-
-
 const style:CSSProperties = {
     display:"flex",
     flexDirection:"column",
-    alignItems:'left',
-    marginTop: '4em'
+    alignContent:'left',
+    marginTop: '4em',
+    marginLeft: '6em'
 }
-
-const formStyle:CSSProperties = {
-    display: 'flex',
-    marginTop: '1em',
-    alignItems:'center',
-}
-
 
 const filterStyle:CSSProperties = {
     display:"flex",
     flexDirection:"row",
- 
-    //justifyItems:"space-between"
 }
 
 const filterItemStyle:CSSProperties = {
     listStyleType:'none',
-    padding:"2em"
+    paddingRight: "1.5em"
 }
