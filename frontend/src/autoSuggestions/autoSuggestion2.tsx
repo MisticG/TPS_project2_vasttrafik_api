@@ -31,9 +31,9 @@ const getSuggestionValue = (suggestion:any) => suggestion;
 
 
 const renderSuggestion = (suggestion:any) => (
-  <ul>
-      <li>{suggestion.name}</li>
-    </ul>
+    <div>
+        {suggestion.name}
+    </div>
   );
 
 export default class Autosuggest2 extends React.Component<Props,State> {
