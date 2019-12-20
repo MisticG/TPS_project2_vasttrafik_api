@@ -6,7 +6,7 @@ The user can...
 
 - select specific transports.
 - be able to see the next 3 trips.
-- see stops in between the two stops that was chosen.
+- see stops in between the two stops that was selected.
 - see if the current transport is late.
 
 In backend we created a function to handle the tokens. The tokens were used in the requests that were made to the API. The json-file containing all the stops, is updated every 24h with setinterval method.
