@@ -1,3 +1,4 @@
+
 # Projektarbete 2 - WIE18G - Create app with Västtrafik API.
 We created an app using Typescript/React and nodejs/typescript as our backend. The app lets the user search and display departure/arrival times with the help of Västtrafik API.
 
@@ -17,3 +18,4 @@ In backend we created a function to handle the tokens. The tokens were used in t
 2. **$ cd frontend** and run **$ npm install**
 
 3. **$ cd..** and run **$ npm run dev**
+
