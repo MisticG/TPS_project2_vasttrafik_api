@@ -28,6 +28,7 @@ app.get('/', async (req:express.Request, res:express.Response)=>{
  
 })
 
+
 //Get all stops 
 app.get('/locations', async (req:express.Request, res:express.Response)=>{
     
@@ -54,6 +55,7 @@ app.post('/getTrafikInfo', async (req:express.Request, res:express.Response)=>{
     getTrafikInfo(req,res,axios, token)
 
 })
+
 
 
 const port = 5000;

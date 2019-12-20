@@ -1,3 +1,4 @@
+
 import React, { Component, CSSProperties } from 'react';
 import Autosuggest2 from './autoSuggestions/autoSuggestion2'
 import Form from './forms/Form';
@@ -153,6 +154,7 @@ export default class App extends Component<Props, State> {
                 </div> 
             </div>
         )
+
     }
 }
 
