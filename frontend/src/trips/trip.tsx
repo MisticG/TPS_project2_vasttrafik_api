@@ -130,7 +130,7 @@ export default class Trip extends Component<Props, State> {
                     
                         if(leg.type !== "WALK") {
         
-                        return <ul style={{listStyle: "none"}}> 
+                        return <ul style={{listStyle: "none"}} key={Math.floor(Math.random()*10000).toString()}> 
         
                             <li> Från hållplats: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
                             <li> Till hållplats: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
@@ -149,7 +149,7 @@ export default class Trip extends Component<Props, State> {
                                     
                                 </ul>
                         } else {
-                            return <ul style={{listStyle: "none"}}> 
+                            return <ul style={{listStyle: "none"}} key={Math.floor(Math.random()*1000).toString()}> 
         
                                     <li> 🏃‍♀️ {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
                                     <li> 🧍‍♀️ {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
@@ -158,15 +158,15 @@ export default class Trip extends Component<Props, State> {
                             
         
                     })
-                    return <div style={tripContainer}> <h3> Din sökta resa: </h3> {test} </div>
+                    return <div style={tripContainer} key={Math.floor(Math.random()*1000).toString()}> <h3> Din sökta resa: </h3> {test} </div>
                 } else {
 
 
                     if(trip.type !== "WALK") {
         
-                        return <div style={tripContainer}>
+                        return <div style={tripContainer} key={Math.floor(Math.random()*1000).toString()}>
                                 <h3> Din sökta resa: </h3>
-                                 <ul style={{listStyle: "none", padding: "1em"}}> 
+                                 <ul style={{listStyle: "none", padding: "1em"}} key={Math.floor(Math.random()*1000).toString()}> 
         
                                     <li> Från hållplats: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
                                     <li> Till hållplats: {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
@@ -185,8 +185,8 @@ export default class Trip extends Component<Props, State> {
                                 </div>
                         } else {
 
-                            return <div style={tripContainer}>
-                                    <ul style={{listStyle: "none"}}> 
+                            return <div style={tripContainer} key={Math.floor(Math.random()*1000).toString()}>
+                                    <ul style={{listStyle: "none"}} key={Math.floor(Math.random()*1000).toString()}> 
             
                                         <li> 🏃‍♀️ {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
                                         <li> 🧍‍♀️ {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>

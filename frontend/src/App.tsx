@@ -115,7 +115,7 @@ export default class App extends Component<Props, State> {
     renderFiltering = () => {
         let filters = ['Spårvagn', 'Buss', 'Båt','Västtåg', 'Övriga tåg'];
         return filters.map((filter)=>{
-            return<li style={filterItemStyle}><button className="btn btn-info" onClick={()=>this.setChoosenVehicleType(filter)}>{filter}</button></li> 
+            return<li key={Math.floor(Math.random()*10000).toString()} style={filterItemStyle}><button className="btn btn-info" onClick={()=>this.setChoosenVehicleType(filter)}>{filter}</button></li> 
         })
     }
 
