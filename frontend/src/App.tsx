@@ -79,7 +79,8 @@ export default class App extends Component<Props, State> {
             let response = await axios.post('/searchTrip', data);
 
             let actuallResponse = await response.data;
-            response.status === 200 && actuallResponse.length > 0 ? this.setState({trips:actuallResponse, choosenVehicle:[]},()=>alert('It takes time to update!')):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
+            let FourActualResponse = actuallResponse.slice(0, 4);
+            response.status === 200 && actuallResponse.length > 0 ? this.setState({trips:FourActualResponse, choosenVehicle:[]},()=>alert('It takes time to update!')):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {

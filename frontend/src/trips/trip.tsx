@@ -165,6 +165,7 @@ export default class Trip extends Component<Props, State> {
                     if(trip.type !== "WALK") {
         
                         return <div style={tripContainer}>
+                                <h3> Din sökta resa: </h3>
                                  <ul style={{listStyle: "none", padding: "1em"}}> 
         
                                     <li> Från hållplats: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
