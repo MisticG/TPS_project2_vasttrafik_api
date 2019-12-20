@@ -2,5 +2,3 @@
 /frontend/node_modules
 /backend/handlers/keys.ts
 /backend/handlers/keys.js
-/backend/allLocation.json
-/backend/nodemon.json
