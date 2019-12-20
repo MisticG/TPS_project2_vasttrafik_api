@@ -1,6 +1,7 @@
 body {
-    background-image: url('assets/varsstrafik3_bg.png')
-    /*background-color: red;*/
+    background-image: url('assets/varsstrafik3_bg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /*SNOWFLAKES!!! */
