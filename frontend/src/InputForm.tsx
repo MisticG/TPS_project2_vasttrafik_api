@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Framework7React from 'framework7-react';
 
 //Skapa en form med två input - en "från" och en "till". Värdena ska skickas till backend.
 
@@ -11,6 +12,23 @@ import React, { Component } from 'react';
     toInput:''
 
   };
+
+  componentDidMount(){
+        
+    this.$f7ready((app)=>{
+
+        var autocomplete = app.autocomplete.create({
+
+            
+            inputEl: '#searchFeild',
+            openIn: 'dropdown',
+            source: function (query, render) {
+                console.log(query);
+        
+            }
+          });
+    });
+}
 
 /*   findTrip = (e:any) =>{
     e.preventDefault();
@@ -46,6 +64,7 @@ import React, { Component } from 'react';
           <div className="form-group">
             <input
             type="text"
+            id="searchFeild"
             className="form-control form-control-lg mb-4"
             placeholder="From:"
             name="fromInput"
