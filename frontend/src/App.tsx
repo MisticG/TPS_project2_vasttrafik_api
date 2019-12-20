@@ -131,7 +131,7 @@ export default class App extends Component<Props, State> {
                     <ul style={filterStyle}> {this.renderFiltering()} </ul>
                     <div>
                         <Form>
-                            <form style={{padding: "1em"}} onSubmit={this.handleSubmit}>
+                            <form style={{padding: "1em", marginBottom: 0}} onSubmit={this.handleSubmit}>
                                 <label>Från: <Autosuggest2 placeholder={''}value={this.state.start} onChange={this.getStartValue} type={'start'}/></label><br></br>
                                 <label>Till: <Autosuggest2 placeholder={''} value={this.state.end} onChange={this.getEndValue} type={'end'}/></label><br></br>
 

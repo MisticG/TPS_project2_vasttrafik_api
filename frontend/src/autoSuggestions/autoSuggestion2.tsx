@@ -1,5 +1,5 @@
 import Autosuggest from 'react-autosuggest';
-import React, { Component, CSSProperties } from 'react';
+import React from 'react';
 import axios from 'axios';
 interface location {
   name: string;

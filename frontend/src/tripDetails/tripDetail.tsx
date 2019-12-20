@@ -1,6 +1,4 @@
-import React, { Component, CSSProperties } from 'react';
-import axios from 'axios';
-
+import React, { Component } from 'react';
 
 interface State {
   
@@ -29,10 +27,6 @@ interface Props{
 }
 
 export default class TripDetail extends Component<Props, State> {
-    constructor(props:Props){
-        super(props);
-        
-    } 
 
     renderStopStations = ()=> {
       // 5 9 något som är större än 5 men mindre eller lika med 9
@@ -60,8 +54,4 @@ export default class TripDetail extends Component<Props, State> {
 
         
     }
-}
-
-const tripContainer:CSSProperties = {
-    backgroundColor:"#e9e9f5"
 }
