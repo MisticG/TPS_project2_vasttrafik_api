@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var express = require("express");
 var bodyParser = require("body-parser");
-
 var saveLocationHandler_1 = require("./handlers/saveLocationHandler");
 var handleAccessToken_1 = require("./handlers//handleAccessToken");
 var axios_1 = require("axios");
@@ -109,7 +108,5 @@ exports.app.post('/getTrafikInfo', function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-
-
 var port = 5000;
 exports.app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });

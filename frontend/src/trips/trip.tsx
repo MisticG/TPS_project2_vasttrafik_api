@@ -130,54 +130,52 @@ export default class Trip extends Component<Props, State> {
                     
                         if(leg.type !== "WALK") {
         
-                        return <ul> 
+                        return <ul style={{listStyle: "none"}}> 
         
-                                    <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
-                                    <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
-    
-                                    <button onClick={()=> this.getTrafikInfo(leg.Origin.id, leg.Origin.date, leg.Origin.time, leg.journeyNumber)}>Har den föresning?</button>
-                                   
-                                    <button onClick={()=> this.sendRef(
-                                       leg.JourneyDetailRef.ref, leg.Origin.routeIdx,leg.Destination.routeIdx, index,i
-    
-    
-                                         
-                                         )}>Visa Alla Hållplatser</button>
+                            <li> Från hållplats: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
+                            <li> Till hållplats: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
+
+                            <button style={{marginTop: "1em", marginRight: "1em"}} className="btn btn-warning" onClick={()=> this.getTrafikInfo(leg.Origin.id, leg.Origin.date, leg.Origin.time, leg.journeyNumber)}>Har den föresning?</button>
+                            
+                            <button style={{marginTop: "1em"}} className="btn btn-warning" onClick={()=> this.sendRef(
+                                leg.JourneyDetailRef.ref, leg.Origin.routeIdx,leg.Destination.routeIdx, index,i
+
+
                                     
-                                    { this.state.tripI === index && this.state.legI === i ? this.renderStopStations():''}
+                                    )}>Visa Alla Hållplatser</button>
+                            
+                            { this.state.tripI === index && this.state.legI === i ? this.renderStopStations():''}
                                   
                                     
                                 </ul>
                         } else {
-                            return <ul> 
+                            return <ul style={{listStyle: "none"}}> 
         
-                                    <li> Läge A   Namn: {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
-                                    <li> Läge B   Namn: {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
+                                    <li> 🏃‍♀️ {leg.name} {leg.Origin.name } Tid: {leg.Origin.time}</li>
+                                    <li> 🧍‍♀️ {leg.name} {leg.Destination.name } Tid: {leg.Destination.time}</li>
                                 </ul>
                         }
                             
         
                     })
-                    return <div style={tripContainer}> Here is one trip: {test}</div>
+                    return <div style={tripContainer}> <h3> Din sökta resa: </h3> {test} </div>
                 } else {
 
 
                     if(trip.type !== "WALK") {
         
                         return <div style={tripContainer}>
-                                 <ul> 
+                                 <ul style={{listStyle: "none", padding: "1em"}}> 
         
-                                    <li> Läge A   Namn: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
-                                    <li> Läge B   Namn: {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
+                                    <li> Från hållplats: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
+                                    <li> Till hållplats: {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
     
-                                    <button onClick={()=> this.getTrafikInfo(trip.Leg.Origin.id, trip.Leg.Origin.date, trip.Leg.Origin.time, trip.Leg.journeyNumber)}>Har den föresning?</button>
+                                    <button style={{marginTop: "1em", marginRight: "1em"}}className="btn btn-warning" onClick={()=> this.getTrafikInfo(trip.Leg.Origin.id, trip.Leg.Origin.date, trip.Leg.Origin.time, trip.Leg.journeyNumber)}>Är den försenad?</button>
                                    
-                                    <button onClick={()=> this.sendRef(
+                                    <button style={{marginTop: "1em"}} className="btn btn-warning" onClick={()=> this.sendRef(
                                        trip.Leg.JourneyDetailRef.ref, trip.Leg.Origin.routeIdx,trip.Leg.Destination.routeIdx, index,index
-    
-    
                                          
-                                         )}>Visa Alla Hållplatser</button>
+                                        )}>Visa hållplatser</button>
                                     
                                     { this.state.tripI === index && this.state.legI === index ? this.renderStopStations():''}
                                   
@@ -187,10 +185,10 @@ export default class Trip extends Component<Props, State> {
                         } else {
 
                             return <div style={tripContainer}>
-                                    <ul> 
+                                    <ul style={{listStyle: "none"}}> 
             
-                                        <li> Läge A   Namn: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
-                                        <li> Läge B   Namn: {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
+                                        <li> 🏃‍♀️ {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
+                                        <li> 🧍‍♀️ {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
                                     </ul>
                                 </div>
                         }
@@ -213,5 +211,9 @@ export default class Trip extends Component<Props, State> {
 }
 
 const tripContainer:CSSProperties = {
-    backgroundColor:"#e9e9f5"
+    width: "50%",
+    backgroundColor:"#e9e9f5",
+    padding: "1em",
+    listStyle: "none",
+    margin: "1em"
 }

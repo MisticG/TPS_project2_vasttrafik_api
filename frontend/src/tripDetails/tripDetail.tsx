@@ -45,19 +45,16 @@ export default class TripDetail extends Component<Props, State> {
         }).map((station:{ depDate:string, depTime: string, id: string, lat: string,lon: string,name: string,routeIdx: string,track:string})=>{
             if(station.name !== '') {
 
-                return <li>Station Namn: {station.name }  AvgTid: {station.depTime}</li>
+                return <li>Hållplats: {station.name }  AvgTid: {station.depTime}</li>
             }
 
         })
-      
-      
-    
     }
            
   
     render() {
        
-        return<ul>
+        return<ul style={{listStyle: "none"}}>
             {this.renderStopStations()}
         </ul>
 
