@@ -29,5 +29,21 @@ app.post('/', (req:express.Request, res:express.Response) => {
 
 
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
+});
+
+var searchController = require('./searchController');
+app.route('/search').get(searchController.search);
+
+
+
+
+
 const port = 5000;
 app.listen(port, () => console.log(`Listening on port ${ process.env.PORT||port }`));

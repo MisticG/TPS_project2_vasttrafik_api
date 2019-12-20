@@ -20,5 +20,15 @@ app.post('/', function (req, res) {
     // Skicka till västtrafik för att hämta Stops
     // Skicka tillbaka till klienten 
 });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    next();
+});
+var searchController = require('./searchController');
+app.route('/search').get(searchController.search);
 var port = 5000;
 app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });
