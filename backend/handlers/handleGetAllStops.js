@@ -44,7 +44,17 @@ function getAllStops(fileSytem, res) {
                     console.log(error);
                 }
                 var dataParse = JSON.parse(data);
-                res.json(dataParse);
+                if (dataParse.length !== undefined && dataParse.length > 0) {
+                    var stationWithoutTrackes = dataParse.filter(function (station) {
+                        if (station.track === undefined) {
+                            return station;
+                        }
+                    }).map(function (station) {
+                        return station;
+                    });
+                    console.log(stationWithoutTrackes.length, 'here is length');
+                    res.json(stationWithoutTrackes);
+                }
             });
             return [2 /*return*/];
         });

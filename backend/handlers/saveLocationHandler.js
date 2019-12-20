@@ -36,18 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var keys_1 = require("./keys");
 var axios_1 = require("axios");
 var fs = require("file-system");
-var authenticationHandler_1 = require("./authenticationHandler");
+var handleAccessToken_1 = require("./handleAccessToken");
 function saveAllLocation() {
     return __awaiter(this, void 0, void 0, function () {
         var url, token, headers, request, response, allLocationData, data, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = keys_1.keys.allLocationUrl;
-                    return [4 /*yield*/, authenticationHandler_1["default"]()];
+                    url = "https://api.vasttrafik.se/bin/rest.exe/v2/location.allstops?format=json";
+                    return [4 /*yield*/, handleAccessToken_1["default"]()];
                 case 1:
                     token = _a.sent();
                     headers = {
@@ -66,8 +65,11 @@ function saveAllLocation() {
                         allLocationData = response.LocationList.StopLocation;
                         data = JSON.stringify(allLocationData, null, 2);
                         fs.writeFile('./allLocation.json', data, function (err, fs) {
-                            if (err)
+                            if (err) {
+                                console.log(err);
                                 throw err;
+                            }
+                            ;
                             console.log('filesUpdated');
                         });
                     }
@@ -85,3 +87,21 @@ function saveAllLocation() {
     });
 }
 exports["default"] = saveAllLocation;
+/*  let response = await axios.get("https://api.vasttrafik.se/bin/rest.exe/v2/location.allstops?format=json", {
+                    headers: {
+                    Authorization: `Bearer ${res.locals.token}`,
+                    },
+                })
+            let awaitResponse = await response.data.LocationList.StopLocation;
+            //console.log(awaitResponse)
+            let stringifiedlocations = JSON.stringify(awaitResponse);
+           
+            fileSytem.writeFile('locations.json', stringifiedlocations, (error, fs)=>{
+                if(error) {
+                    console.log(error)
+                }
+                //console.log(stringifiedlocations)
+                res.send('Can write'+ fs)
+               
+            })
+             */ 

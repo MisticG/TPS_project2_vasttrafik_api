@@ -39,26 +39,36 @@ exports.__esModule = true;
 var keys_1 = require("./keys");
 var axios_1 = require("axios");
 var moment = require("moment");
-var time;
+//since token could be at first moment we leave it as any as it is
+var token_time;
+var expires_in;
+var token;
 function handleToken() {
     return __awaiter(this, void 0, void 0, function () {
-        var nowDate, now, url, response, token, expires_in;
+        var token_time_format, now, nowFm, difference, url, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    nowDate = new Date();
-                    now = moment(nowDate, 'YYYY-MM-DD[T]HH:mm:ss[Z]');
-                    time === undefined || time === null ? now : time;
+                    token_time = moment();
+                    token_time.add(expires_in, 'seconds');
+                    token_time_format = token_time.format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+                    now = moment();
+                    nowFm = now.format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+                    difference = moment(nowFm).isAfter(token_time_format);
+                    console.log(difference, 'dif');
+                    console.log(token_time_format, 'token time');
+                    console.log(nowFm, 'now');
+                    if (!!difference) return [3 /*break*/, 2];
                     url = "https://api.vasttrafik.se/token";
                     return [4 /*yield*/, axios_1["default"].request({ method: 'post', url: url, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, data: "grant_type=client_credentials&client_id=" + keys_1.keys.key + "&client_secret=" + keys_1.keys.secret })];
                 case 1:
                     response = _a.sent();
                     token = response.data.access_token;
                     expires_in = response.data.expires_in;
-                    time = now.add(expires_in, 'seconds');
-                    console.log(expires_in, 'here is time');
-                    console.log(token);
+                    console.log(expires_in, 'here is current expires_in');
+                    console.log(token, 'here is token ');
                     return [2 /*return*/, token];
+                case 2: return [2 /*return*/];
             }
         });
     });

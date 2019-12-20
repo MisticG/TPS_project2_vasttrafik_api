@@ -27,7 +27,7 @@ export default async function getTwoPointStops(req, res, axios, token){
      
         let trips = dat.TripList.Trip;
      
-        console.log(response, 'here i trip data')
+        
         typeof awaitResponse.errorText === undefined || trips === undefined ? res.json([]):res.json(trips)
         
     } catch(error) {

@@ -2,7 +2,7 @@ import express  = require('express')
 import * as bodyParser from 'body-parser';
 
 import saveAllLocation from './handlers/saveLocationHandler';
-import handleToken from './handlers/authenticationHandler'
+import handleToken from './handlers//handleAccessToken'
 
 import axios from 'axios';
 import * as fileSytem from 'file-system'
@@ -24,8 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
 app.get('/', async (req:express.Request, res:express.Response)=>{
-
-    res.send('Hello from start page')
+    res.json({token:handleToken()})
  
 })
 
@@ -39,7 +38,7 @@ app.get('/locations', async (req:express.Request, res:express.Response)=>{
 //Get orgin-dest points stops
 app.post('/searchTrip',async (req:express.Request, res:express.Response)=>{
     let token = await handleToken();
-    console.log(token)
+    console.log(token,' here is token')
     getTwoPointStops(req, res, axios, token);
 })
 
@@ -48,7 +47,7 @@ app.post('/getTripDetail', async (req:express.Request, res:express.Response) => 
     let token = await handleToken();
     getTripDetail(req, res, axios, token)
 })
-
+//Get trafikinfo of choosen trip(lateTime.Otherwise return [])
 app.post('/getTrafikInfo', async (req:express.Request, res:express.Response)=>{
     let token = await handleToken();
 
@@ -56,9 +55,6 @@ app.post('/getTrafikInfo', async (req:express.Request, res:express.Response)=>{
 
 })
 
-app.get('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.send({handleToken})
-})
 
 const port = 5000;
 app.listen(port, () => console.log(`Listening on port ${ process.env.PORT||port }`));

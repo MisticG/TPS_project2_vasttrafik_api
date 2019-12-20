@@ -39,7 +39,7 @@ exports.__esModule = true;
 var express = require("express");
 var bodyParser = require("body-parser");
 var saveLocationHandler_1 = require("./handlers/saveLocationHandler");
-var authenticationHandler_1 = require("./handlers/authenticationHandler");
+var handleAccessToken_1 = require("./handlers//handleAccessToken");
 var axios_1 = require("axios");
 var fileSytem = require("file-system");
 var handleGetTwoPointsStops_1 = require("./handlers/handleGetTwoPointsStops");
@@ -57,7 +57,7 @@ exports.app.use(bodyParser.json());
 exports.app.use(bodyParser.urlencoded({ extended: true }));
 exports.app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        res.send('Hello from start page');
+        res.json({ token: handleAccessToken_1["default"]() });
         return [2 /*return*/];
     });
 }); });
@@ -73,10 +73,10 @@ exports.app.post('/searchTrip', function (req, res) { return __awaiter(void 0, v
     var token;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, authenticationHandler_1["default"]()];
+            case 0: return [4 /*yield*/, handleAccessToken_1["default"]()];
             case 1:
                 token = _a.sent();
-                console.log(token);
+                console.log(token, ' here is token');
                 handleGetTwoPointsStops_1["default"](req, res, axios_1["default"], token);
                 return [2 /*return*/];
         }
@@ -87,7 +87,7 @@ exports.app.post('/getTripDetail', function (req, res) { return __awaiter(void 0
     var token;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, authenticationHandler_1["default"]()];
+            case 0: return [4 /*yield*/, handleAccessToken_1["default"]()];
             case 1:
                 token = _a.sent();
                 HandleGetTripDetail_1["default"](req, res, axios_1["default"], token);
@@ -95,11 +95,12 @@ exports.app.post('/getTripDetail', function (req, res) { return __awaiter(void 0
         }
     });
 }); });
+//Get trafikinfo of choosen trip(lateTime.Otherwise return [])
 exports.app.post('/getTrafikInfo', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var token;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, authenticationHandler_1["default"]()];
+            case 0: return [4 /*yield*/, handleAccessToken_1["default"]()];
             case 1:
                 token = _a.sent();
                 handleGetTrafikInfo_1["default"](req, res, axios_1["default"], token);
@@ -107,8 +108,5 @@ exports.app.post('/getTrafikInfo', function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-exports.app.get('/', function (req, res, next) {
-    res.send({ handleToken: authenticationHandler_1["default"] });
-});
 var port = 5000;
 exports.app.listen(port, function () { return console.log("Listening on port " + (process.env.PORT || port)); });

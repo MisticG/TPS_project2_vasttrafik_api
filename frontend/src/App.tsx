@@ -78,17 +78,13 @@ export default class App extends Component<Props, State> {
             let response = await axios.post('/searchTrip', data);
 
             let actuallResponse = await response.data;
-            response.status === 200 && actuallResponse.length > 0 ? await this.setState({trips:actuallResponse, choosenVehicle:[]},()=>alert('It takes time to update!')):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
+            response.status === 200 && actuallResponse.length > 0 ? this.setState({trips:actuallResponse, choosenVehicle:[]},()=>alert('It takes time to update!')):this.setState({trips:[]},()=>{alert('Hittar ingen resa')});
     
             console.log(actuallResponse, 'here is from axios')
         } catch(error) {
 
             alert('Couldnt deliver request searchTrip')
-            /* 
-            om man gör flera vehicke type visa den som hittas och aler för den som inte finns
-            
-            */
-            
+           
             console.log('Could not search current trip', error)
         }
     }
@@ -106,7 +102,7 @@ export default class App extends Component<Props, State> {
         this.setState({chooosenEnd:value})
     }
    
-    choosenVehicleType = (choosen:string)=>{
+    setChoosenVehicleType = (choosen:string)=>{
         let choosenVehicles = this.state.choosenVehicle;
 
         choosenVehicles.push(choosen);
@@ -117,12 +113,14 @@ export default class App extends Component<Props, State> {
     renderFiltering = () => {
         let filters = ['Spårvagn', 'Buss', 'Båt','Västtåg', 'Övriga tåg'];
         return filters.map((filter)=>{
-            return<li style={filterItemStyle}><button className="btn btn-info" onClick={()=>this.choosenVehicleType(filter)}>{filter}</button></li> 
+            return<li style={filterItemStyle}><button className="btn btn-info" onClick={()=>this.setChoosenVehicleType(filter)}>{filter}</button></li> 
         })
     }
 
+
+    
     render() {
-        console.log('holla')
+       
         return (
             <div className="container-fluid">
                 {snowFall()}

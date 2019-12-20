@@ -79,7 +79,7 @@ export default class Trip extends Component<Props, State> {
     renderStopStations = ()=>{ 
         //Since we one empty station item at begining 
         if(this.state.stopStations.length > 0 ) {
-            console.log('vi sätter state here')
+          
             return <TripDetail stopStations={this.state.stopStations} originIdx={this.state.originIdx} destIdx={this.state.destIdx} flagg={this.state.flagg} trips={this.props.trips}/>
         } else {
             return ''
@@ -120,10 +120,11 @@ export default class Trip extends Component<Props, State> {
    
     renderTrips = ()=> {
         if(this.props.trips.length > 0 ) {
+
             return this.props.trips.map((trip:any, index:number)=>{
-             
-                if(trip.Leg.length > 0 ){
-                  
+        
+                if(Array.isArray(trip.Leg)){
+                   
                     let test = trip.Leg.map((leg:any, i:number)=>{
                         
                     
@@ -158,6 +159,42 @@ export default class Trip extends Component<Props, State> {
         
                     })
                     return <div style={tripContainer}> Here is one trip: {test}</div>
+                } else {
+
+
+                    if(trip.type !== "WALK") {
+        
+                        return <div style={tripContainer}>
+                                 <ul> 
+        
+                                    <li> Läge A   Namn: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
+                                    <li> Läge B   Namn: {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
+    
+                                    <button onClick={()=> this.getTrafikInfo(trip.Leg.Origin.id, trip.Leg.Origin.date, trip.Leg.Origin.time, trip.Leg.journeyNumber)}>Har den föresning?</button>
+                                   
+                                    <button onClick={()=> this.sendRef(
+                                       trip.Leg.JourneyDetailRef.ref, trip.Leg.Origin.routeIdx,trip.Leg.Destination.routeIdx, index,index
+    
+    
+                                         
+                                         )}>Visa Alla Hållplatser</button>
+                                    
+                                    { this.state.tripI === index && this.state.legI === index ? this.renderStopStations():''}
+                                  
+                                    
+                                </ul>
+                                </div>
+                        } else {
+
+                            return <div style={tripContainer}>
+                                    <ul> 
+            
+                                        <li> Läge A   Namn: {trip.Leg.name} {trip.Leg.Origin.name } Tid: {trip.Leg.Origin.time}</li>
+                                        <li> Läge B   Namn: {trip.Leg.name} {trip.Leg.Destination.name } Tid: {trip.Leg.Destination.time}</li>
+                                    </ul>
+                                </div>
+                        }
+                            
                 }
             })
 

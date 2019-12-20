@@ -118,7 +118,7 @@ export default class Autosuggest2 extends React.Component<Props,State> {
           {this.rendIsLoading()}
                           
       <Autosuggest
-        suggestions={suggestions.slice(0, 7)}
+        suggestions={suggestions.slice(0,7)}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
